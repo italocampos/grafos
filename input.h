@@ -1,7 +1,7 @@
 #include <iostream>
 #include <stdlib.h>
-#include <tabela.h>
-#include <lista.h>
+#include "tabela.h"
+#include "lista.h"
 
 using namespace std;
 
