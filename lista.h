@@ -1,7 +1,7 @@
 #ifndef LISTA_H_
 #define LISTA_H_
 
-#include "C:\Users\MM1\Documents\Atividade_03\no.h"
+#include "no.h"
 #include <iostream>
 #include <stdlib.h>
 #include <stdio.h>
