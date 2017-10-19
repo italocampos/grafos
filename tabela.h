@@ -1,7 +1,7 @@
 #ifndef TABELA_H_
 #define TABELA_H_
 
-#include <lista.h>
+#include "lista.h"
 #include <iostream>
 #include <vector>
 
