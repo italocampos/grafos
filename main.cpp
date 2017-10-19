@@ -1,7 +1,7 @@
 #include <iostream>
 #include <locale>
-#include "C:\Users\MM1\Documents\Atividade_03\lista.h"
-#include "C:\Users\MM1\Documents\Atividade_03\tabela.h"
+#include "lista.h"
+#include "tabela.h"
 
 using namespace std;
 
@@ -92,7 +92,7 @@ int main() {
 	
 	cout<< endl << "This is an other fernoob: \n"; fernoob.print(); cout << endl;
 	
-	cout<<"\nGrau de saída do nó 1 = "<<fernoob.numColumns(1)-1;
+	cout<<"\nGrau de saÃ­da do nÃ³ 1 = "<<fernoob.numColumns(1)-1;
 	
 	
 	cout<<endl;
