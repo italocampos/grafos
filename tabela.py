@@ -12,8 +12,20 @@ class Tabela():
 	def addLine(self, lista):
 		self.lista.append(lista)
 
+	def numLines(self):
+		return len(self.lista);
+
+	def numColumns(self, linha):
+		return len(self.lista[linha]);
+
 	def getLine(self, linha):
-		return self.lista[linha]
+		if linha >= 0 and linha < self.numLines():
+			return self.lista[linha]
+		else:
+			print("out of range")
+
+	def getAdjacentes(self, no):
+		return self.lista[self.elementIndex(no)][1:]
 
 	def removeLine(self, linha):
 		del self.lista[linha]
@@ -30,5 +42,14 @@ class Tabela():
 			a += 1
 		return False
 
-    def getItem(self, linha, coluna):
-        return self.lista[linha][coluna]
+	def elementIndex(self, item):
+		a = 0
+		for i in self.lista:
+			if item == i[0]:
+				return a
+			a += 1
+		#return False
+		print("out of range")
+
+	def getItem(self, linha, coluna):
+		return self.lista[linha][coluna]

@@ -1,18 +1,22 @@
 #!/usr/bin/env python3
 
-def separaLista(self, linha):
+from tabela import Tabela
+
+def separaLista(linha):
 	temp = linha.split()
 	listapronta = []
 	for item in temp:
 		if item != '->':
 			if item[-1] == ',':
-				listapronta.append(item[:-1])
+				listapronta.append(int(item[:-1]))
 			else:
-				listapronta.append(item)
+				listapronta.append(int(item))
 	return listapronta
 
-def addFromFile(self, namefile):
+def addFromFile(namefile):
+	tab = Tabela()
 	arquivo = open(namefile, 'r')
 	for linha in arquivo:
-		self.lista.append(self.separaLista(linha))
+		tab.addLine(separaLista(linha))
 	arquivo.close()
+	return tab
