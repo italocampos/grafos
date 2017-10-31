@@ -6,18 +6,18 @@ def isExplorado(exploradas, aresta):
     if [aresta[1],aresta[0]] in exploradas: return True
     return False
 
-def buscaProfundidade(grafo, no, marcados, explorados, retorno):
+def buscaProfundidade(grafo, no, marcados, exploradas, retorno):
     marcados.append(no)
     for item in grafo.getAdjacentes(no):
         if item not in marcados:
-            explorados.append([no,item])
+            exploradas.append([no,item])
             marcados.append(no)
-            marcados, explorados, retorno = buscaProfundidade(grafo, item, marcados, explorados, retorno)
+            marcados, exploradas, retorno = buscaProfundidade(grafo, item, marcados, exploradas, retorno)
         else:
-            if not isExplorado(explorados, [no,item]):
-                explorados.append([no,item])
+            if not isExplorado(exploradas, [no,item]):
+                exploradas.append([no,item])
                 retorno.append([no,item])
-    return marcados, explorados, retorno
+    return marcados, exploradas, retorno
 
 def buscaLargura(grafo, vertice_inicial):
     marcados = []
@@ -40,8 +40,4 @@ def buscaLargura(grafo, vertice_inicial):
             elif not isExplorado(exploradas, [v,no]):
                 exploradas.append([v,no])
                 retorno.append([v,no])
-    print("---------------------------------------------------------")
-    print("Resultados da busca em largura no grafo:")
-    print("Noh inicial: ", vertice_inicial)
-    print("Arestas exploradas: ", exploradas)
-    print("Arestas de retorno: ", retorno, "\n")
+    return marcados, exploradas, retorno
