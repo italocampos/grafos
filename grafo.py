@@ -6,12 +6,18 @@ Created on Thu Oct 26 22:40:32 2017
 @author: Fernando Junior, Italo Ramon
 """
 
+from vertice import Vertice
+
 class Grafo():
 	vertices = []
 	arestas = []
 
-	def addVertice(self, vertice):
-		self.vertices.append(vertice)
+	def addVertice(self, vertice, peso = 0):
+		if(type(vertice) == list):
+			for v in vertice:
+				self.vertices.append(Vertice(v))
+		else:
+			self.vertices.append(Vertice(vertice, peso))
 
 	def addAresta(self, aresta):
 		if(type(aresta) == list) and (len(aresta) == 2):
@@ -22,12 +28,15 @@ class Grafo():
 		else:
 			print("Aresta inválida.")
 
-	def addAresta(self, aresta):
-		print("YAY!")
-
 	def print(self):
 		print("Vertices: ", self.vertices)
 		print("Arestas: ", self.arestas)
+	
+	def printAll(self):
+		print("Vertices: ")
+		for v in self.vertices:
+			v.printAll()
+		print("\nArestas: ", self.arestas)
 
 	def numColumns(self, linha):
 		return len(self.lista[linha]);
