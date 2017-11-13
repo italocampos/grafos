@@ -26,7 +26,7 @@ class Aresta():
 		return self.peso
 
 	def getAresta(self):
-		return {'vertices:', self.vertices,'rotulo': self.rotulo, 'peso': self.peso}
+		return {'vertices': self.vertices,'rotulo': self.rotulo, 'peso': self.peso}
 
 	def setVertices(self, vertices):
 		self.vertices = vertices

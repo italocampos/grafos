@@ -7,6 +7,7 @@ Created on Thu Oct 26 22:40:32 2017
 """
 
 from vertice import Vertice
+from aresta import Aresta
 
 class Grafo():
 	vertices = []
@@ -28,15 +29,35 @@ class Grafo():
 		else:
 			print("Aresta inválida.")
 
+	def hasVertice(self, vertice):
+		novo = Vertice(vertice)
+		for v in self.vertices:
+			if v.getRotulo() == novo.getRotulo():
+				return True
+		return False
+
+	def hasAresta(self, aresta):
+		nova = Aresta(vertice)
+		for a in self.arestas:
+			if a.getRotulo() == nova.getRotulo():
+				return True
+		return False
+
 	def print(self):
-		print("Vertices: ", self.vertices)
-		print("Arestas: ", self.arestas)
+		print("Vertices: ")
+		for v in self.vertices:
+			v.print()
+		print("\nArestas: ")
+		for a in self.arestas:
+			a.print()
 	
 	def printAll(self):
 		print("Vertices: ")
 		for v in self.vertices:
 			v.printAll()
-		print("\nArestas: ", self.arestas)
+		print("\nArestas: ")
+		for a in self.arestas:
+			a.printAll()
 
 	def numColumns(self, linha):
 		return len(self.lista[linha]);
