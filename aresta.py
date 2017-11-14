@@ -38,7 +38,7 @@ class Aresta():
 		self.peso = peso
 
 	def print(self):
-		print(self.vertices)
+		print(self.vertices, end = '')
 
 	def printAll(self):
-		print('arestas:',self.vertices,', rotulo:',self.rotulo,', peso:',self.peso)
+		print('>> aresta: ',self.vertices, ', peso: ', self.peso, ', rótulo: ', self.rotulo)

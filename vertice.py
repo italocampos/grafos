@@ -30,7 +30,7 @@ class Vertice():
 		self.peso = peso
 
 	def print(self):
-		print(self.rotulo)
+		print(self.rotulo, end = '')
 
 	def printAll(self):
-		print('vértice:', self.rotulo, ", peso: ", self.peso)
+		print('>> vértice:', self.rotulo, ", peso: ", self.peso)

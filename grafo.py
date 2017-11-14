@@ -12,6 +12,16 @@ from aresta import Aresta
 class Grafo():
 	vertices = []
 	arestas = []
+	direcionado = False
+
+	def __addAresta__(self, aresta, peso = 1, rotulo = ''):
+		if self.hasVertice(aresta[0]) and self.hasVertice(aresta[1]):
+			if not self.hasAresta(aresta):
+				self.arestas.append(Aresta(aresta, peso, rotulo))
+			else:
+				print('A aresta', aresta, 'já existe.')
+		else:
+			print('A aresta ', aresta, ' não pertence ao grafo.')
 
 	def addVertice(self, vertice, peso = 0):
 		if(type(vertice) == list):
@@ -19,21 +29,20 @@ class Grafo():
 				if not self.hasVertice(v):
 					self.vertices.append(Vertice(v))
 				else:
-					print("O vértice", v, "já existe no grafo")
-		else:
+					print('O vértice', v, 'já existe.')
+		elif not self.hasVertice(Vertice(vertice)):
 			self.vertices.append(Vertice(vertice, peso))
 
-	def addAresta(self, aresta):
-		if(type(aresta) == list) and (len(aresta) == 2):
-			if self.hasVertice(aresta[0]) and self.hasVertice(aresta[1]):
-				if not self.hasAresta(aresta):
-					self.arestas.append(Aresta(aresta))
-				else:
-					print("A aresta", aresta, "já existe no grafo")
+	def addAresta(self, aresta, peso = 1, rotulo = ''):
+		if(type(aresta) == list):
+			if len(aresta) == 2:
+				self.__addAresta__(aresta, peso, rotulo)
 			else:
-				print("Aresta não pertence ao grafo.")
+				for a in aresta:
+					if (len(a) == 2):
+						self.__addAresta__(a)
 		else:
-			print("Aresta inválida.")
+			print('Aresta inválida.')
 
 	def hasVertice(self, vertice):
 		novo = Vertice(vertice)
@@ -49,22 +58,6 @@ class Grafo():
 				return True
 		return False
 
-	def print(self):
-		print("Vertices: ")
-		for v in self.vertices:
-			v.print()
-		print("\nArestas: ")
-		for a in self.arestas:
-			a.print()
-	
-	def printAll(self):
-		print("Vertices: ")
-		for v in self.vertices:
-			v.printAll()
-		print("\nArestas: ")
-		for a in self.arestas:
-			a.printAll()
-    
 	def getAdjacentes(self, vertice):
 		temp = []
 		for t in self.arestas:
@@ -73,3 +66,36 @@ class Grafo():
 			elif vertice == t.getVertices()[1] and t.getVertices()[1] not in temp:
 				temp.append(t.getVertices()[0])
 		return temp
+
+	def getVertices(self):
+		vertices = []
+		for v in self.vertices:
+			vertices.append(v.getRotulo())
+		return vertices
+
+	def getArestas(self):
+		arestas = []
+		for a in self.arestas:
+			temp = a.getVertices()
+			temp.append(a.getPeso())
+			arestas.append(temp)
+		return arestas
+
+	def print(self):
+		print("Vertices: ", end = '')
+		for v in self.vertices:
+			v.print()
+			print(", ", end = '')
+		print("\nArestas: ", end ='')
+		for a in self.arestas:
+			a.print()
+			print(", ", end = '')
+		print()
+	
+	def printAll(self):
+		print("Vertices: ")
+		for v in self.vertices:
+			v.printAll()
+		print("\nArestas: ")
+		for a in self.arestas:
+			a.printAll()
