@@ -17,6 +17,16 @@ class Grafo():
 	def __init__(self, direcionado = False):
 		self.direcionado = direcionado
 
+	def addVertice(self, vertice, peso = 0):
+		if(type(vertice) == list):
+			for v in vertice:
+				if not self.hasVertice(v):
+					self.vertices.append(Vertice(v))
+				else:
+					print('O vértice', v, 'já existe.')
+		elif not self.hasVertice(Vertice(vertice)):
+			self.vertices.append(Vertice(vertice, peso))
+
 	def __addAresta__(self, aresta, peso = 1, rotulo = ''):
 		if self.hasVertice(aresta[0]) and self.hasVertice(aresta[1]):
 			if not self.hasAresta(aresta):
@@ -27,16 +37,6 @@ class Grafo():
 				print('A aresta', aresta, 'já existe.')
 		else:
 			print('A aresta ', aresta, ' não pertence ao grafo.')
-
-	def addVertice(self, vertice, peso = 0):
-		if(type(vertice) == list):
-			for v in vertice:
-				if not self.hasVertice(v):
-					self.vertices.append(Vertice(v))
-				else:
-					print('O vértice', v, 'já existe.')
-		elif not self.hasVertice(Vertice(vertice)):
-			self.vertices.append(Vertice(vertice, peso))
 
 	def addAresta(self, aresta, peso = 1, rotulo = ''):
 		if(type(aresta) == list):
@@ -71,8 +71,6 @@ class Grafo():
 		for t in self.arestas:
 			if vertice == t.getVertices()[0] and t.getVertices()[0] not in temp:
 				temp.append(t.getVertices()[1])
-			elif vertice == t.getVertices()[1] and t.getVertices()[1] not in temp:
-				temp.append(t.getVertices()[0])
 		return temp
 
 	def getVertices(self):
