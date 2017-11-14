@@ -14,10 +14,15 @@ class Grafo():
 	arestas = []
 	direcionado = False
 
+	def __init__(self, direcionado = False):
+		self.direcionado = direcionado
+
 	def __addAresta__(self, aresta, peso = 1, rotulo = ''):
 		if self.hasVertice(aresta[0]) and self.hasVertice(aresta[1]):
 			if not self.hasAresta(aresta):
 				self.arestas.append(Aresta(aresta, peso, rotulo))
+				if not self.isDirecionado():
+					self.arestas.append(Aresta(aresta[::-1], peso, rotulo))
 			else:
 				print('A aresta', aresta, 'já existe.')
 		else:
@@ -35,7 +40,7 @@ class Grafo():
 
 	def addAresta(self, aresta, peso = 1, rotulo = ''):
 		if(type(aresta) == list):
-			if len(aresta) == 2:
+			if len(aresta) == 2 and type(aresta) != list:
 				self.__addAresta__(aresta, peso, rotulo)
 			else:
 				for a in aresta:
@@ -43,6 +48,9 @@ class Grafo():
 						self.__addAresta__(a)
 		else:
 			print('Aresta inválida.')
+
+	def isDirecionado(self):
+		return self.direcionado
 
 	def hasVertice(self, vertice):
 		novo = Vertice(vertice)
