@@ -16,14 +16,20 @@ class Grafo():
 	def addVertice(self, vertice, peso = 0):
 		if(type(vertice) == list):
 			for v in vertice:
-				self.vertices.append(Vertice(v))
+				if not self.hasVertice(v):
+					self.vertices.append(Vertice(v))
+				else:
+					print("O vértice", v, "já existe no grafo")
 		else:
 			self.vertices.append(Vertice(vertice, peso))
 
 	def addAresta(self, aresta):
 		if(type(aresta) == list) and (len(aresta) == 2):
-			if(aresta[0] in self.vertices) and (aresta[1] in self.vertices):
-				self.arestas.append(aresta)
+			if self.hasVertice(aresta[0]) and self.hasVertice(aresta[1]):
+				if not self.hasAresta(aresta):
+					self.arestas.append(Aresta(aresta))
+				else:
+					print("A aresta", aresta, "já existe no grafo")
 			else:
 				print("Aresta não pertence ao grafo.")
 		else:
@@ -37,9 +43,9 @@ class Grafo():
 		return False
 
 	def hasAresta(self, aresta):
-		nova = Aresta(vertice)
+		nova = Aresta(aresta)
 		for a in self.arestas:
-			if a.getRotulo() == nova.getRotulo():
+			if a.getVertices() == nova.getVertices():
 				return True
 		return False
 
@@ -58,42 +64,12 @@ class Grafo():
 		print("\nArestas: ")
 		for a in self.arestas:
 			a.printAll()
-
-	def numColumns(self, linha):
-		return len(self.lista[linha]);
-
-	def getLine(self, linha):
-		if linha >= 0 and linha < self.numLines():
-			return self.lista[linha]
-		else:
-			print("out of range")
-
-	def getAdjacentes(self, no):
-		return self.lista[self.elementIndex(no)][1:]
-
-	def removeLine(self, linha):
-		del self.lista[linha]
-
-	def printTable(self):
-		for i in self.lista:
-			print (i)
-
-	def elementIndex(self, item):
-		a = 0
-		for i in self.lista:
-			if str(item) == i[0]:
-				return a
-			a += 1
-		return False
-
-	def elementIndex(self, item):
-		a = 0
-		for i in self.lista:
-			if item == i[0]:
-				return a
-			a += 1
-		#return False
-		print("out of range")
-
-	def getItem(self, linha, coluna):
-		return self.lista[linha][coluna]
+    
+	def getAdjacentes(self, vertice):
+		temp = []
+		for t in self.arestas:
+			if vertice == t.getVertices()[0] and t.getVertices()[0] not in temp:
+				temp.append(t.getVertices()[1])
+			elif vertice == t.getVertices()[1] and t.getVertices()[1] not in temp:
+				temp.append(t.getVertices()[0])
+		return temp

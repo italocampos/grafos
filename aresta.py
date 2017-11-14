@@ -41,4 +41,4 @@ class Aresta():
 		print(self.vertices)
 
 	def printAll(self):
-		print('arestas:',self.arestas,'rotulo:',self.rotulo,'peso:',self.peso)
+		print('arestas:',self.vertices,', rotulo:',self.rotulo,', peso:',self.peso)
