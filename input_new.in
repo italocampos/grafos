@@ -1,0 +1,8 @@
+direcionado=False
+vertices , B(0), C(1), D(3), E (-3.77),
+F, G, H
+, I(144)
+arestas
+	A: D(4) , C;
+	B: D(0) "vizinhos", C "adjacentes";
+	C: D(2), E;
