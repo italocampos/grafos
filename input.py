@@ -27,12 +27,12 @@ def bananasplit(string):
 		banana.append(palavra)
 	return banana
 
-def lerGrafo(string):
+def readVertices(string):
 	rotulo = ''
 	peso = 0.0
-	aresta = []
 	estado = -1
 	grafo = Grafo()
+
 	for palavra in bananasplit(string):
 		if palavra == 'vertices':
 			estado = 0
@@ -59,9 +59,70 @@ def lerGrafo(string):
 			break
 	return grafo
 
+def readEdges(string):
+	temp = ''
+	rotulo = ''
+	peso = 1.0
+	aresta = []
+	estado = -1
+	grafo = Grafo()
+
+	for palavra in bananasplit(string):
+		if palavra == 'arestas':
+			estado = 0
+		elif estado == 0:
+			if palavra == ':':
+				aresta[0] = temp
+				temp = ''
+				estado = 1
+			else:
+				temp += palavra
+		elif estado == 1:
+			if palavra == ',':
+				estado = 2
+			elif palavra == ';':
+				estado = 7
+			elif palavra == '(':
+				estado = 3
+			else:
+				temp += palavra
+		elif estado == 2:
+			grafo.addAresta(aresta, peso, rotulo)
+			rotulo = ''
+			peso = 1.0
+			estado = 0
+			if palavra != ',':
+				temp += palavra
+		elif estado == 3:
+			if palavra == ')':
+				estado = 5
+			else:
+				peso = float(palavra)
+		elif estado == 4:
+			if palavra == '"':
+				estado = 6
+			else:
+				rotulo += temp
+		if palavra == 'arestas':
+			break
+	return grafo
+
+def readGraph(nome_arquivo):
+	rotulo = ''
+	peso = 0.0
+	aresta = []
+	estado = -1
+	verticeA = ''
+	verticeB = ''
+	grafo = Grafo()
+
+	# ler o arquivo de entrada
+	arquivo = open(nome_arquivo)
+	string = arquivo.read()
+	arquivo.close()
 
 
-
+	return grafo
 
 def separaLista(linha):
 	temp = linha.split()
