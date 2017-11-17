@@ -16,6 +16,8 @@ class Grafo():
 
 	def __init__(self, direcionado = False):
 		self.direcionado = direcionado
+		vertices = []
+		arestas = []
 
 	def addVertice(self, vertice, peso = 0):
 		if(type(vertice) == list):
@@ -40,7 +42,7 @@ class Grafo():
 
 	def addAresta(self, aresta, peso = 1, rotulo = ''):
 		if(type(aresta) == list):
-			if len(aresta) == 2 and type(aresta) != list:
+			if len(aresta) == 2 and type(aresta[0]) != list and type(aresta[1]) != list:
 				self.__addAresta__(aresta, peso, rotulo)
 			else:
 				for a in aresta:
@@ -80,12 +82,12 @@ class Grafo():
 		return vertices
 
 	def getArestas(self):
-		arestas = []
+		aresta = []
 		for a in self.arestas:
 			temp = a.getVertices()
 			temp.append(a.getPeso())
-			arestas.append(temp)
-		return arestas
+			aresta.append(temp)
+		return aresta
 
 	def print(self):
 		print("Vertices: ", end = '')
