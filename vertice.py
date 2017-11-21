@@ -6,7 +6,7 @@ Created on Mon Nov 13 17:04:32 2017
 @author: Fernando Junior, Italo Ramon
 """
 
-class Vertice():
+class Vertice:
 	rotulo = ''
 	peso = 0
 

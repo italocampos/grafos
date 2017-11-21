@@ -9,15 +9,15 @@ Created on Thu Oct 26 22:40:32 2017
 from vertice import Vertice
 from aresta import Aresta
 
-class Grafo():
+class Grafo:
 	vertices = []
 	arestas = []
 	direcionado = False
 
 	def __init__(self, direcionado = False):
+		self.vertices = []
+		self.arestas = [] 
 		self.direcionado = direcionado
-		vertices = []
-		arestas = []
 
 	def addVertice(self, vertice, peso = 0):
 		if(type(vertice) == list):
@@ -82,12 +82,23 @@ class Grafo():
 		return vertices
 
 	def getArestas(self):
-		aresta = []
+		arestas = []
 		for a in self.arestas:
-			temp = a.getVertices()
+			temp = [a.getVertices()]
 			temp.append(a.getPeso())
-			aresta.append(temp)
-		return aresta
+			arestas.append(temp)
+		return arestas
+
+	def getObjectAresta(self):
+		return self.arestas
+		
+	def getFranja(self, exploradas):
+		temp = []
+		for e in exploradas:
+			for t in self.arestas:
+				if e == t.getVertices()[0] and t.getVertices()[1] not in exploradas:
+					temp.append([t.getVertices(), t.getPeso()])
+		return temp
 
 	def print(self):
 		print("Vertices: ", end = '')
