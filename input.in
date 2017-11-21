@@ -1,6 +1,7 @@
 direcionado=False
-vertices A, B(0), C(1), D(3), E (-3.77), F, G, H, I(144)
+vertices Rio de Janeiro, Minas Gerais, Belém, Sergipe
 arestas
-	A: D "isso tá bugado", C;
-	B: D, C;
-	C: D, E;
+	A: D "o", C(144) "python";
+	B: D (12), C (0)"tem";
+	C: D (2014) "uns_bugs", E;
+	E: I "legais";

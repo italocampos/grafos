@@ -7,6 +7,9 @@ Created on Wes Nov 15 14:44:32 2017
 """
 
 from grafo import Grafo
+from vertice import Vertice
+from aresta import Aresta
+from copy import copy
 
 def bananasplit(string):
 	banana = []
@@ -27,11 +30,10 @@ def bananasplit(string):
 		banana.append(palavra)
 	return banana
 
-def readVertices(string):
+def readVertices(string, grafo):
 	rotulo = ''
 	peso = 0.0
 	estado = -1
-	grafo = Grafo()
 
 	for palavra in bananasplit(string):
 		if palavra == 'vertices':
@@ -60,8 +62,8 @@ def readVertices(string):
 
 	return grafo
 
-def readEdges(string, grafo):
-	vertice = ''
+def readArestas(string, grafo):
+	nome = ''
 	rotulo = ''
 	peso = 1.0
 	aresta = ['', '']
@@ -72,30 +74,29 @@ def readEdges(string, grafo):
 			estado = 0
 		elif estado == 0:
 			if palavra == ':':
-				aresta[0] = vertice; vertice = ''; estado = 1
+				aresta[0] = nome; nome = ''; estado = 1
 			else:
-				vertice += palavra
+				nome += palavra
 		elif estado == 1:
 			if palavra == ',':
-				aresta[1] = vertice
+				aresta[1] = nome
 				estado = 2
 			elif palavra == ';':
-				aresta[1] = vertice
+				aresta[1] = nome
 				estado = 7
 			elif palavra == '(':
-				aresta[1] = vertice
+				aresta[1] = nome
 				estado = 3
 			elif palavra == '"':
-				aresta[1] = vertice
+				aresta[1] = nome
 				estado = 5
 			else:
-				vertice += palavra
+				nome += palavra
 		elif estado == 2:
-			grafo.addAresta(aresta, peso, rotulo)
-			print("DEBUG: aresta = ", aresta, ", peso = ", peso, ", rotulo = ", rotulo)
-			rotulo = ''; peso = 1.0; estado = 1; vertice = ''
+			grafo.addAresta(copy(aresta), peso, rotulo)
+			rotulo = ''; peso = 1.0; estado = 1; nome = ''
 			if palavra != ',':
-				vertice = palavra
+				nome = palavra
 		elif estado == 3:
 			if palavra == ')':
 				estado = 4
@@ -119,16 +120,14 @@ def readEdges(string, grafo):
 			elif palavra == ',':
 				estado = 2
 		elif estado == 7:
-			grafo.addAresta(aresta, peso, rotulo)
-			print("DEBUG: aresta = ", aresta, ", peso = ", peso, ", rotulo = ", rotulo)
-			rotulo = ''; peso = 1.0; estado = 0; vertice = palavra; aresta = ['', '']
+			grafo.addAresta(copy(aresta), peso, rotulo)
+			rotulo = ''; peso = 1.0; estado = 0; nome = palavra; aresta = ['', '']
 	else:
-		grafo.addAresta(aresta, peso, rotulo)
-		print("DEBUG: aresta = ", aresta, ", peso = ", peso, ", rotulo = ", rotulo)
+		grafo.addAresta(copy(aresta), peso, rotulo)
 	
 	return grafo
 
-def readGraph(nome_arquivo):
+def readGrafo(nome_arquivo):
 	grafo = Grafo(True)
 
 	# ler o arquivo de entrada
@@ -136,27 +135,8 @@ def readGraph(nome_arquivo):
 	string = arquivo.read()
 	arquivo.close()
 
-	# ler os vértices
-	grafo = readVertices(string)
-	grafo = readEdges(string, grafo)
+	# ler os vértices e arestas
+	grafo = readVertices(string, grafo)
+	grafo = readArestas(string, grafo)
 
 	return grafo
-
-def separaLista(linha):
-	temp = linha.split()
-	listapronta = []
-	for item in temp:
-		if item != '->':
-			if item[-1] == ',':
-				listapronta.append(int(item[:-1]))
-			else:
-				listapronta.append(int(item))
-	return listapronta
-
-def addFromFile(namefile):
-	tab = Tabela()
-	arquivo = open(namefile, 'r')
-	for linha in arquivo:
-		tab.addLine(separaLista(linha))
-	arquivo.close()
-	return tab
