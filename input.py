@@ -7,8 +7,6 @@ Created on Wes Nov 15 14:44:32 2017
 """
 
 from grafo import Grafo
-from vertice import Vertice
-from aresta import Aresta
 from copy import copy
 
 def bananasplit(string):
