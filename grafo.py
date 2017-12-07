@@ -8,7 +8,6 @@ Created on Thu Oct 26 22:40:32 2017
 
 from vertice import Vertice
 from aresta import Aresta
-from copy import copy
 
 class Grafo:
 	vertices = []
@@ -16,9 +15,9 @@ class Grafo:
 	direcionado = False
 
 	def __init__(self, direcionado = False):
+		self.vertices = []
+		self.arestas = [] 
 		self.direcionado = direcionado
-		vertices = []
-		arestas = []
 
 	def addVertice(self, vertice, peso = 0):
 		if(type(vertice) == list):
@@ -27,10 +26,8 @@ class Grafo:
 					self.vertices.append(Vertice(v))
 				else:
 					print('O vértice', v, 'já existe.')
-		elif not self.hasVertice(vertice):
+		elif not self.hasVertice(Vertice(vertice)):
 			self.vertices.append(Vertice(vertice, peso))
-		else:
-			print('O vértice', vertice, 'já existe.')
 
 	def __addAresta__(self, aresta, peso = 1, rotulo = ''):
 		if self.hasVertice(aresta[0]) and self.hasVertice(aresta[1]):
@@ -56,10 +53,6 @@ class Grafo:
 
 	def isDirecionado(self):
 		return self.direcionado
-
-	def setTipo(self, valor):
-		if type(valor) == bool:
-			self.direcionado = valor
 
 	def hasVertice(self, vertice):
 		novo = Vertice(vertice)
@@ -89,12 +82,23 @@ class Grafo:
 		return vertices
 
 	def getArestas(self):
-		aresta = []
+		arestas = []
 		for a in self.arestas:
-			temp = copy(a.getVertices())
+			temp = [a.getVertices()]
 			temp.append(a.getPeso())
-			aresta.append(temp)
-		return aresta
+			arestas.append(temp)
+		return arestas
+
+	def getObjectAresta(self):
+		return self.arestas
+		
+	def getFranja(self, exploradas):
+		temp = []
+		for e in exploradas:
+			for t in self.arestas:
+				if e == t.getVertices()[0] and t.getVertices()[1] not in exploradas:
+					temp.append([t.getVertices(), t.getPeso()])
+		return temp
 
 	def print(self):
 		print("Vertices: ", end = '')
