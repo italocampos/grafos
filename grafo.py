@@ -8,6 +8,7 @@ Created on Thu Oct 26 22:40:32 2017
 
 from vertice import Vertice
 from aresta import Aresta
+from copy import copy
 
 class Grafo:
 	vertices = []
@@ -26,8 +27,10 @@ class Grafo:
 					self.vertices.append(Vertice(v))
 				else:
 					print('O vértice', v, 'já existe.')
-		elif not self.hasVertice(Vertice(vertice)):
+		elif not self.hasVertice(vertice):
 			self.vertices.append(Vertice(vertice, peso))
+		else:
+			print('O vértice ', vertice, ' já existe.')
 
 	def __addAresta__(self, aresta, peso = 1, rotulo = ''):
 		if self.hasVertice(aresta[0]) and self.hasVertice(aresta[1]):
@@ -54,6 +57,10 @@ class Grafo:
 	def isDirecionado(self):
 		return self.direcionado
 
+	def setTipo(self, valor):
+		if type(valor) == bool:
+			self.direcionado = valor
+	
 	def hasVertice(self, vertice):
 		novo = Vertice(vertice)
 		for v in self.vertices:
@@ -84,7 +91,7 @@ class Grafo:
 	def getArestas(self):
 		arestas = []
 		for a in self.arestas:
-			temp = [a.getVertices()]
+			temp = copy(a.getVertices())
 			temp.append(a.getPeso())
 			arestas.append(temp)
 		return arestas
