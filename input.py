@@ -7,6 +7,8 @@ Created on Wes Nov 15 14:44:32 2017
 """
 
 from grafo import Grafo
+from vertice import Vertice
+from aresta import Aresta
 from copy import copy
 
 def bananasplit(string):
@@ -14,12 +16,10 @@ def bananasplit(string):
 	palavra = ''
 	for c in string:
 		if not c.isalnum() and c not in ['-', '.']:
-			#if c == ' ' or palavra != '':
 			if c in [' ', '\n', '\t'] or palavra != '':
 				if palavra != '':
 					banana.append(palavra)
 					palavra = ''
-			#if c != ' ':
 			if c not in [' ', '\n', '\t']:
 				banana.append(c)
 		else:
@@ -28,7 +28,7 @@ def bananasplit(string):
 		banana.append(palavra)
 	return banana
 
-def readVertices(string, grafo):
+def lerVertices(string, grafo):
 	rotulo = ''
 	peso = 0.0
 	estado = -1
@@ -37,7 +37,7 @@ def readVertices(string, grafo):
 		if palavra == 'vertices':
 			estado = 0
 		elif estado == 0:
-			if palavra == ',':
+			if palavra in [',', ';']:
 				estado = 1
 			elif palavra == '(':
 				estado = 2
@@ -60,7 +60,7 @@ def readVertices(string, grafo):
 
 	return grafo
 
-def readArestas(string, grafo):
+def lerArestas(string, grafo):
 	nome = ''
 	rotulo = ''
 	peso = 1.0
@@ -73,6 +73,8 @@ def readArestas(string, grafo):
 		elif estado == 0:
 			if palavra == ':':
 				aresta[0] = nome; nome = ''; estado = 1
+			elif palavra == ';':
+				break
 			else:
 				nome += palavra
 		elif estado == 1:
@@ -125,7 +127,165 @@ def readArestas(string, grafo):
 	
 	return grafo
 
-def readGrafo(nome_arquivo):
+def lerTipo(string, grafo):
+	cont = 0
+	start = 0
+
+	for palavra in bananasplit(string):
+		if cont == 1:
+			grafo.setTipo(palavra.lower() == 'true')
+		if start == 1:
+			cont += 1
+		if palavra == 'direcionado':
+			start = 1
+
+	return grafo
+
+def validar(string):
+	estado = 0
+	reservados = [',', '(', ')', ';', ':', '"', '=', 'arestas']
+	leitura = ''
+
+	for palavra in bananasplit(string):
+		if palavra == 'direcionado':
+			estado = 1
+		elif estado == 1:
+			if palavra == '=':
+				estado = 2
+			else:
+				estado = 'invalid'
+		elif estado == 2:
+			if palavra.lower() in ['true', 'false']:
+				estado = 3
+			else:
+				estado = 'invalid'
+		elif estado == 3:
+			if palavra == 'vertices':
+				estado = 4
+			else:
+				estado = 'invalid'
+		elif estado == 4:
+			if palavra not in reservados:
+				estado = 5
+			else:
+				estado = 'invalid'
+		elif estado == 5:
+			if palavra == ',':
+				estado = 6
+			elif palavra == '(':
+				estado = 17
+			elif palavra == ';':
+				estado = 20
+			elif palavra in reservados:
+				estado = 'invalid'
+		elif estado == 6:
+			if palavra not in reservados:
+				estado = 5
+			else:
+				estado = 'invalid'
+		elif estado == 7:
+			if palavra == ';':
+				estado = 'final1'
+			elif palavra not in reservados:
+				estado = 8
+			else:
+				estado = 'invalid'
+		elif estado == 8:
+			if palavra == ':':
+				estado = 16
+			elif palavra in reservados:
+				estado = 'invalid'
+		elif estado == 9:
+			if palavra == ';':
+				estado = 'final'
+			elif palavra == '(':
+				estado = 11
+			elif palavra == ',':
+				estado = 10
+			elif palavra == '"':
+				estado = 13
+			elif palavra in [':', ')', '=']:
+				estado = 'invalid'
+		elif estado == 10:
+			if palavra not in reservados:
+				estado = 9
+			else:
+				estado = 'invalid'
+		elif estado == 11:
+			if not isreal(palavra):
+				estado = 'invalid'
+			else:
+				estado = 15
+		elif estado == 12:
+			if palavra == ';':
+				estado = 'final'
+			elif palavra == ',':
+				estado = 9
+			elif palavra == '"':
+				estado = 13
+			else:
+				estado = 'invalid'
+		elif estado == 13:
+			if palavra == '"':
+				estado = 14
+			elif palavra in reservados:
+				estado = 'invalid'
+		elif estado == 14:
+			if palavra == ';':
+				estado = 'final'
+			elif palavra == ',':
+				estado = 9
+			else:
+				estado = 'invalid'
+		elif estado == 15:
+			if palavra == ')':
+				estado = 12
+			else:
+				estado = 'invalid'
+		elif estado == 16:
+			if palavra not in reservados:
+				estado = 9
+			else:
+				estado = 'invalid'
+		elif estado == 17:
+			if not isreal(palavra):
+				estado = 'invalid'
+			else:
+				estado = 18
+		elif estado == 18:
+			if palavra == ')':
+				estado = 19
+			else:
+				estado = 'invalid'
+		elif estado == 19:
+			if palavra == ',':
+				estado = 6
+			elif palavra == ';':
+				estado = 20
+			else:
+				estado = 'invalid'
+		elif estado == 20:
+			if palavra == 'arestas':
+				estado = 7
+			else:
+				estado = 'invalid'
+		elif estado == 'final':
+			if palavra not in reservados:
+				estado = 8
+			else:
+				estado = 'invalid'
+		elif estado == 'final1':
+			estado = 'invalid'
+		if estado == 'invalid':
+			break
+		leitura += ' ' + palavra
+	if estado in ['final', 'final1']:
+		return True
+	else:
+		print('Erro de sintaxe: ', leitura)
+		return False
+
+def lerGrafo(nome_arquivo):
 	grafo = Grafo(True)
 
 	# ler o arquivo de entrada
@@ -133,8 +293,19 @@ def readGrafo(nome_arquivo):
 	string = arquivo.read()
 	arquivo.close()
 
-	# ler os vértices e arestas
-	grafo = readVertices(string, grafo)
-	grafo = readArestas(string, grafo)
+	# validar a entrada
+	if validar(string):
+		# ler os vértices, o tipo e as arestas
+		grafo = lerTipo(string, grafo)
+		grafo = lerVertices(string, grafo)
+		grafo = lerArestas(string, grafo)
+		return grafo
+	else:
+		return None
 
-	return grafo
+def isreal(string):
+	try:
+		float(string)
+		return True
+	except ValueError:
+		return False

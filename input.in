@@ -1,7 +1,7 @@
-direcionado=False
-vertices Rio de Janeiro, Minas Gerais, Belém, Sergipe
-arestas
-	A: D "o", C(144) "python";
-	B: D (12), C (0)"tem";
-	C: D (2014) "uns_bugs", E;
-	E: I "legais";
+# This is a test about comments
+
+direcionado = False
+
+vertices A, B, C;
+arestas	A: B (-23), C;
+		B: C;
