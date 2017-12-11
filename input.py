@@ -42,14 +42,15 @@ def lerVertices(string, grafo):
 			elif palavra == '(':
 				estado = 2
 			else:
-				rotulo += palavra
+				rotulo += palavra + ' '
 		elif estado == 1:
+			rotulo = rotulo[:-1]
 			grafo.addVertice(rotulo, peso)
 			rotulo = ''
 			peso = 0.0
 			estado = 0
 			if palavra != ',':
-				rotulo += palavra
+				rotulo += palavra + ' '
 		elif estado == 2:
 			if palavra == ')':
 				estado = 1
@@ -72,31 +73,37 @@ def lerArestas(string, grafo):
 			estado = 0
 		elif estado == 0:
 			if palavra == ':':
+				nome = nome[:-1]
 				aresta[0] = nome; nome = ''; estado = 1
 			elif palavra == ';':
 				break
 			else:
-				nome += palavra
+				nome += palavra + ' '
 		elif estado == 1:
 			if palavra == ',':
+				nome = nome[:-1]
 				aresta[1] = nome
 				estado = 2
 			elif palavra == ';':
+				nome = nome[:-1]
 				aresta[1] = nome
 				estado = 7
 			elif palavra == '(':
+				nome = nome[:-1]
 				aresta[1] = nome
 				estado = 3
 			elif palavra == '"':
+				nome = nome[:-1]
 				aresta[1] = nome
 				estado = 5
 			else:
-				nome += palavra
+				nome += palavra + ' '
 		elif estado == 2:
+			rotulo = rotulo[:-1]
 			grafo.addAresta(copy(aresta), peso, rotulo)
 			rotulo = ''; peso = 1.0; estado = 1; nome = ''
 			if palavra != ',':
-				nome = palavra
+				nome = palavra + ' '
 		elif estado == 3:
 			if palavra == ')':
 				estado = 4
@@ -113,16 +120,18 @@ def lerArestas(string, grafo):
 			if palavra == '"':
 				estado = 6
 			else:
-				rotulo += palavra
+				rotulo += palavra + ' '
 		elif estado == 6:
 			if palavra == ';':
 				estado = 7
 			elif palavra == ',':
 				estado = 2
 		elif estado == 7:
+			rotulo = rotulo[:-1]
 			grafo.addAresta(copy(aresta), peso, rotulo)
-			rotulo = ''; peso = 1.0; estado = 0; nome = palavra; aresta = ['', '']
+			rotulo = ''; peso = 1.0; estado = 0; nome = palavra + ' '; aresta = ['', '']
 	else:
+		rotulo = rotulo[:-1]
 		grafo.addAresta(copy(aresta), peso, rotulo)
 	
 	return grafo

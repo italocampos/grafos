@@ -2,6 +2,8 @@
 
 direcionado = False
 
-vertices A, B, C;
-arestas	A: B (-23), C;
-		B: C;
+vertices Mãe do Rio, Ipixuna, Breu Branco, Afuá, São Caetano de Oldivelas;
+arestas 
+	Mãe do Rio: Ipixuna (7) "PA 212", Breu Branco (14);
+	Ipixuna: Breu Branco (12), Afuá (15) "PA 112";
+	São Caetano de Oldivelas: Mãe do Rio, Breu Branco, Afuá "PA 190";
