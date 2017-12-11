@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+from copy import deepcopy
+from grafo import Grafo
+infinito = 1000000000000000000000000000000000000000000000000000000000
+
 def isExplorado(exploradas, aresta):
     if [aresta[0],aresta[1]] in exploradas: return True
     if [aresta[1],aresta[0]] in exploradas: return True
@@ -41,13 +45,6 @@ def buscaLargura(grafo, vertice_inicial):
                 exploradas.append([v,no])
                 retorno.append([v,no])
     return marcados, removeItens(exploradas,retorno), retorno
-
-
-#-------------------------------------------------------
-#adicionados depois
-
-from copy import deepcopy
-from grafo import Grafo
 
 def insertionSort(G):
     
@@ -120,3 +117,81 @@ def kruskal(grafo):
         i += 2
         
     return T
+	
+def extrairMin(lista, Q):
+	
+	for i in lista:
+		if i[0] in Q:
+			u = i;
+			break
+        
+	q = []
+    
+	for element in lista:
+		if element[0] in Q:
+			q.append(element[0])
+		if element[1] < u[1] and element[0] in Q:
+			u = element
+
+	del q[q.index(u[0])]
+
+	return u, q
+	
+#lista contém elementos no formato [nome, distancia, origem]
+#lista2 contém somente dos elementos adjacentes
+#Deve ser retornado os correspondentes da lista na lista2
+def selecionaAdj(lista, lista2):
+	
+	retorno = []
+	
+	for i in lista2:
+		for j in lista:
+			if i == j[0]:
+				retorno.append(j)
+				continue
+	return retorno;
+	
+def pesoAresta(lista, aresta):
+	for element in lista:
+		if aresta == element[0]:
+			return element[1]
+
+
+			
+			
+def Dijkstra (grafo, inicial):
+	if grafo.hasVertice(inicial):
+		
+		vertices = []
+		arestas = grafo.getArestas()
+		
+		#criando uma lista dos vertices do grafo, contendo nome do vértice, distancia para chegar nele e a origem
+		for i in grafo.vertices:
+			if i.getRotulo() == inicial:
+				vertices.append([i.getRotulo(), 0, inicial])
+			else:
+				vertices.append([i.getRotulo(), infinito, ''])
+
+		Q = grafo.getVertices()
+        
+		while Q != []:
+			
+			#funcao que extrai o vertice com menor distância da lista de vértices 
+			#e elimina esse elemento da lista
+			#a variável u é retornada no formato [nome, distancia, origem]
+
+			
+			
+			u, Q = extrairMin(vertices, Q)
+			#a variável v é retornada no formato [nome, distancia, origem]
+			v = selecionaAdj(vertices, grafo.getAdjacentes(u[0]))
+					
+			for element in v:
+				if element[1] > u[1] + pesoAresta(arestas, [u[0],element[0]]):
+					element[1] = u[1] + pesoAresta(arestas, [u[0],element[0]])
+					element[2] = u[0]
+					if element[0] not in Q: 
+						Q.append(element[0])      
+		return vertices
+	else:
+		print("não foi possivel executar a funcao, pois a aresta dada nao está no grafo!")
