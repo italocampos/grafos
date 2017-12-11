@@ -47,10 +47,9 @@ def buscaLargura(grafo, vertice_inicial):
     return marcados, removeItens(exploradas,retorno), retorno
 
 def insertionSort(G):
-    
     Grafo = deepcopy(G)
     
-    arestas = Grafo.getObjectAresta()
+    arestas = Grafo.getObjectArestas()
 	
     for i in range(1,len(arestas)):
         x = arestas[i]
@@ -99,7 +98,6 @@ def prim(g, i):
 	return Arv_Min
 
 def kruskal(grafo):
-    
     H = insertionSort(grafo)
     
     T = Grafo(False)
@@ -119,7 +117,6 @@ def kruskal(grafo):
     return T
 	
 def extrairMin(lista, Q):
-	
 	for i in lista:
 		if i[0] in Q:
 			u = i;
@@ -141,7 +138,6 @@ def extrairMin(lista, Q):
 #lista2 contém somente dos elementos adjacentes
 #Deve ser retornado os correspondentes da lista na lista2
 def selecionaAdj(lista, lista2):
-	
 	retorno = []
 	
 	for i in lista2:
@@ -159,7 +155,7 @@ def pesoAresta(lista, aresta):
 
 			
 			
-def Dijkstra (grafo, inicial):
+def dijkstra (grafo, inicial):
 	if grafo.hasVertice(inicial):
 		
 		vertices = []

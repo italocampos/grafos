@@ -98,7 +98,7 @@ class Grafo:
 
 	def getObjectArestas(self):
 		return self.arestas
-	
+
 	def getObjectVertices(self):
 		return self.vertices
 		
