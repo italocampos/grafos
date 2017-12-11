@@ -96,8 +96,11 @@ class Grafo:
 			arestas.append(temp)
 		return arestas
 
-	def getObjectAresta(self):
+	def getObjectArestas(self):
 		return self.arestas
+	
+	def getObjectVertices(self):
+		return self.vertices
 		
 	def getFranja(self, exploradas):
 		temp = []
