@@ -4,19 +4,19 @@
 from copy import deepcopy
 from grafo import Grafo
 from auxiliares import *
-infinito = 1000000000000000000000000000000000000000000000000000000000
+infinito = 1e57
 
-def buscaProfundidade(grafo, no, marcados, exploradas, retorno):
-	marcados.append(no)
-	for item in grafo.getAdjacentes(no):
+def buscaProfundidade(grafo, vertice_inicial, marcados, exploradas, retorno):
+	marcados.append(vertice_inicial)
+	for item in grafo.getAdjacentes(vertice_inicial):
 		if item not in marcados:
-			exploradas.append([no,item])
-			marcados.append(no)
+			exploradas.append([vertice_inicial,item])
+			marcados.append(vertice_inicial)
 			marcados, exploradas, retorno = buscaProfundidade(grafo, item, marcados, exploradas, retorno)
 		else:
-			if not isExplorada(exploradas, [no,item]):
-				exploradas.append([no,item])
-				retorno.append([no,item])
+			if not isExplorada(exploradas, [vertice_inicial,item]):
+				exploradas.append([vertice_inicial,item])
+				retorno.append([vertice_inicial,item])
 	return marcados, removeItens(exploradas,retorno), retorno
 
 
@@ -116,6 +116,8 @@ def dijkstra (grafo, inicial):
 
 
 def boruvka(grafo):
-	floresta = grafo.getVertices()
+	floresta = setFlorestaInicial(grafo.getVertices())
 	subarvore = []
  
+	while len(floresta) != 1:
+		pass
