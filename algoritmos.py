@@ -117,7 +117,8 @@ def dijkstra (grafo, inicial):
 
 def boruvka(grafo):
 	floresta = setFlorestaInicial(grafo.getVertices())
-	subarvore = []
+	subarvores = []
  
 	while len(floresta) != 1:
-		pass
+		if not isIn():
+			pass

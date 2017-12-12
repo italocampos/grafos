@@ -93,6 +93,14 @@ def pesoAresta(lista, aresta):
 			return element[1]
 
 
+# subarvore é na forma [[[aresta], peso], [[aresta], peso], ...]
+def isIn(vertice, subarvore):
+	for aresta in subarvore:
+		if vertice == aresta[0][1]:
+			return True
+	return False
+
+
 def setFlorestaInicial(vertices):
 	floresta = []
 	for v in vertices:
