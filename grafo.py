@@ -8,7 +8,6 @@ Created on Thu Oct 26 22:40:32 2017
 
 from vertice import Vertice
 from aresta import Aresta
-from copy import copy
 
 class Grafo:
 	vertices = []

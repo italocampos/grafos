@@ -121,9 +121,11 @@ def boruvka(grafo):
  
 	while len(floresta) != 1:
 		for subarvore in floresta:
-			if not alcancada(subarvore, alcancadas):
-				menor_franja = minFranja(grafo.getFranja(subarvore))
+			if not isAlcancada(subarvore, alcancadas):
+				menor_franja = minFranja(grafo.getFranja(vertices(subarvore)))
 				subarvore.append(menor_franja)
 				alcancadas.append(subarvore)
 		alcancadas = []
 		unificar(floresta)
+
+	return floresta

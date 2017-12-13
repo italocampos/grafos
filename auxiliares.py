@@ -94,22 +94,48 @@ def pesoAresta(lista, aresta):
 
 
 ''' Seja x uma máscara tal que x = [[[A1, B1], p1], [[A2, B2], p2], ..., [[An, Bn], pn]], 
-onde Ai, Bi são componentes de uma aresta e pi são os seus respectivos pesos,
-'subarvore' e 'alcancadas' são listas na forma x. 'subarvore' representa uma subarvore
-qualquer e 'alcancadas' representa as arestas de subarvores que já foram alcancadas.'''
+onde Ai, Bi são componentes de uma aresta e pi são os seus respectivos pesos. '''
 
-def alcancada(subarvore, alcancadas):
+# Retorna os vertices de uma subárvore da forma x
+def vertices(subarvore):
 	vertices = []
 	for aresta in subarvore:
 		if aresta[0][0] not in vertices:
 			vertices.append(aresta[0][0])
+		if aresta[0][1] not in vertices:
+			vertices.append(aresta[0][1])
+	return vertices
+
+
+''' 'subarvore' e 'alcancadas' são listas na forma x. 'subarvore' representa uma subarvore
+qualquer e 'alcancadas' representa as arestas de subárvores que já foram alcancadas.'''
+def isAlcancada(subarvore, alcancadas):
+	# Captura os vértices da subárvore
+	v = vertices(subarvore)
+	# Verifica se algum dos vértices da subárvore foi alcancado
+	for aresta in alcancadas:
+		if aresta[0][1] in v:
 			return True
 	return False
 
 
-def addDistinctVertice(vertices, vertice):
-	if vertice not in vertices:
-		vertices.append(vertice)
+def unificar(floresta):
+	flora = deepcopy(floresta)
+	nova_floresta = []
+	while flora != []:
+		nova_subarvore = flora[0]
+		flora.remove(flora[0])
+		# Verifica se existe interseção entre a nova subárvore as outras da floresta e as unifica
+		for subarvore in flora:
+			ver = vertices(nova_subarvore)
+			for v in ver:
+				if v in vertices(subarvore):
+					nova_subarvore += subarvore
+					flora.remove(subarvore)
+					break
+		nova_floresta.append(nova_subarvore)
+	return nova_floresta
+
 
 
 def setFlorestaInicial(vertices):
