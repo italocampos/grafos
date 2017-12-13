@@ -90,10 +90,12 @@ class Grafo:
 
 	def getArestas(self):
 		arestas = []
+		temp = []
 		for a in self.arestas:
-			temp = copy(a.getVertices())
+			temp.append(a.getVertices())
 			temp.append(a.getPeso())
 			arestas.append(temp)
+			temp = []
 		return arestas
 
 	def getObjectArestas(self):

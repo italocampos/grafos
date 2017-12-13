@@ -117,8 +117,13 @@ def dijkstra (grafo, inicial):
 
 def boruvka(grafo):
 	floresta = setFlorestaInicial(grafo.getVertices())
-	subarvores = []
+	alcancadas = []
  
 	while len(floresta) != 1:
-		if not isIn():
-			pass
+		for subarvore in floresta:
+			if not alcancada(subarvore, alcancadas):
+				menor_franja = minFranja(grafo.getFranja(subarvore))
+				subarvore.append(menor_franja)
+				alcancadas.append(subarvore)
+		alcancadas = []
+		unificar(floresta)

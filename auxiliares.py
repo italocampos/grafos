@@ -93,16 +93,27 @@ def pesoAresta(lista, aresta):
 			return element[1]
 
 
-# subarvore é na forma [[[aresta], peso], [[aresta], peso], ...]
-def isIn(vertice, subarvore):
+''' Seja x uma máscara tal que x = [[[A1, B1], p1], [[A2, B2], p2], ..., [[An, Bn], pn]], 
+onde Ai, Bi são componentes de uma aresta e pi são os seus respectivos pesos,
+'subarvore' e 'alcancadas' são listas na forma x. 'subarvore' representa uma subarvore
+qualquer e 'alcancadas' representa as arestas de subarvores que já foram alcancadas.'''
+
+def alcancada(subarvore, alcancadas):
+	vertices = []
 	for aresta in subarvore:
-		if vertice == aresta[0][1]:
+		if aresta[0][0] not in vertices:
+			vertices.append(aresta[0][0])
 			return True
 	return False
+
+
+def addDistinctVertice(vertices, vertice):
+	if vertice not in vertices:
+		vertices.append(vertice)
 
 
 def setFlorestaInicial(vertices):
 	floresta = []
 	for v in vertices:
-		floresta.append([[v, v], 0])
+		floresta.append([[[v, v], 0]])
 	return floresta
