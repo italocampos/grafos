@@ -115,17 +115,50 @@ def dijkstra (grafo, inicial):
 		print("Não foi possivel executar a função, pois a aresta dada não está no grafo!")
 
 
+def bellmanford (grafo, vertice_inicial):
+	if grafo.hasVertice(vertice_inicial):
+		
+		vertices = []
+		arestas = grafo.getArestas()
+		
+		#criando uma lista dos vertices do grafo, contendo nome do vértice, distancia para chegar nele e a origem
+		for i in grafo.vertices:
+			if i.getRotulo() == vertice_inicial:
+				vertices.append([i.getRotulo(), 0, vertice_inicial])
+			else:
+				vertices.append([i.getRotulo(), infinito, ''])
+		
+		#É feita n-1 iterações, onde n é o número de vértices.
+		for i in range(len(vertices) - 1):
+			
+			#faz a atualização de valores para cada adjacente de cada vértice
+			for u in vertices:
+				
+				#v é a lista de adjacentes do vértice u
+				v = selecionaAdj(vertices, grafo.getAdjacentes(u[0]))
+				
+				#se a distância até esse vértice for menor que infinito, ele executa
+				if u[1] < infinito:
+					
+					#verifica se deve ser feita a atualização para cada vértice adjacente a u
+					for v1 in v:
+						if u != v1:
+							#print(v)
+							if v1[1] > u[1] + pesoAresta(arestas, [u[0],v1[0]]):
+								v1[1] = u[1] + pesoAresta(arestas, [u[0],v1[0]])
+								v1[2] = u[0]
+		return vertices
+			
+
 def boruvka(grafo):
 	floresta = setFlorestaInicial(grafo.getVertices())
 	alcancadas = []
  
 	while len(floresta) != 1:
 		for subarvore in floresta:
-			if not isAlcancada(subarvore, alcancadas):
-				menor_franja = minFranja(grafo.getFranja(vertices(subarvore)))
+			if not alcancada(subarvore, alcancadas):
+				menor_franja = minFranja(grafo.getFranja(subarvore))
 				subarvore.append(menor_franja)
 				alcancadas.append(subarvore)
 		alcancadas = []
 		unificar(floresta)
-
-	return floresta
