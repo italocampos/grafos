@@ -77,6 +77,8 @@ def lerArestas(string, grafo):
 				aresta[0] = nome; nome = ''; estado = 1
 			elif palavra == ';':
 				break
+			elif palavra[0] == '#':
+				break;
 			else:
 				nome += palavra + ' '
 		elif estado == 1:
@@ -281,10 +283,17 @@ def validar(string):
 		elif estado == 'final':
 			if palavra not in reservados:
 				estado = 8
+			elif palavra == '#':
+				estado = 'final'
+				break
 			else:
 				estado = 'invalid'
 		elif estado == 'final1':
-			estado = 'invalid'
+			if palavra == '#':
+				estado = 'final1'
+				break
+			else:
+				estado = 'invalid'
 		if estado == 'invalid':
 			break
 		leitura += ' ' + palavra
