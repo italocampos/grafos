@@ -149,16 +149,17 @@ def bellmanford (grafo, vertice_inicial):
 								v1[2] = u[0]
 		return vertices
 			
-
 def boruvka(grafo):
 	floresta = setFlorestaInicial(grafo.getVertices())
 	alcancadas = []
  
 	while len(floresta) != 1:
 		for subarvore in floresta:
-			if not alcancada(subarvore, alcancadas):
-				menor_franja = minFranja(grafo.getFranja(subarvore))
+			if not isAlcancada(subarvore, alcancadas):
+				menor_franja = minFranja(grafo.getFranja(vertices(subarvore)))
 				subarvore.append(menor_franja)
 				alcancadas.append(subarvore)
+		floresta = unificar(alcancadas)
 		alcancadas = []
-		unificar(floresta)
+	
+	return floresta
