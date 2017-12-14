@@ -119,6 +119,7 @@ def isAlcancada(subarvore, alcancadas):
 	return False
 
 
+# Unifica uma floresta onde há subárvores adjacentes
 def unificar(floresta):
 	flora = deepcopy(floresta)
 	nova_floresta = []
@@ -137,7 +138,7 @@ def unificar(floresta):
 	return nova_floresta
 
 
-
+# Transforma um conjunto de vértices para o formato x
 def setFlorestaInicial(vertices):
 	floresta = []
 	for v in vertices:
