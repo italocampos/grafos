@@ -144,3 +144,31 @@ def setFlorestaInicial(vertices):
 	for v in vertices:
 		floresta.append([[[v, v], 0]])
 	return floresta
+
+
+def delFlorestaInicial(subarvore):
+	lista = []
+	for aresta in subarvore:
+		if not aresta[0][0] == aresta[0][1]:
+			lista.append(aresta)
+	return lista
+
+
+# Retorna a soma de uma lista de arestas no formato x
+def somaPesos(arestas):
+	soma = 0
+	for a in arestas:
+		soma += a[1]
+	return soma
+
+
+# Remove arestas duplicadas em uma lista de arestas no formato x
+def removeDuplicadas(arestas):
+	lista = []
+	for a in arestas:
+		if a not in lista:
+			copia = deepcopy(a)
+			copia[0].reverse()
+			if copia not in lista:
+				lista.append(a)
+	return lista

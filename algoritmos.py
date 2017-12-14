@@ -76,7 +76,7 @@ def kruskal(grafo):
 			T.addAresta(H.arestas[i].getVertices(), H.arestas[i].getPeso())
 		i += 2
 
-	return T
+	return removeDuplicadas(T.getArestas())
 
 
 def dijkstra (grafo, inicial):
@@ -188,4 +188,4 @@ def boruvka(grafo):
 		floresta = unificar(alcancadas)
 		alcancadas = []
 	
-	return floresta
+	return delFlorestaInicial(removeDuplicadas(floresta[0]))
