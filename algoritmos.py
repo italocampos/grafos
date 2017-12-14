@@ -76,7 +76,7 @@ def kruskal(grafo):
 			T.addAresta(H.arestas[i].getVertices(), H.arestas[i].getPeso())
 		i += 2
 
-	return removeDuplicadas(T.getArestas())
+	return T
 
 
 def dijkstra (grafo, inicial):
@@ -147,9 +147,23 @@ def bellmanford (grafo, vertice_inicial):
 							if v1[1] > u[1] + pesoAresta(arestas, [u[0],v1[0]]):
 								v1[1] = u[1] + pesoAresta(arestas, [u[0],v1[0]])
 								v1[2] = u[0]
-		return vertices
-
-
+		
+		hasCycle = False
+		
+		#faz a verificação para saber se tem ciclos
+		for u in vertices:
+			v = selecionaAdj(vertices, grafo.getAdjacentes(u[0]))
+			if u[1] < infinito:
+				for v1 in v:
+						if u != v1:
+							if v1[1] > u[1] + pesoAresta(arestas, [u[0],v1[0]]):
+								hasCycle = True
+		
+		if not hasCycle:
+			return vertices
+		else:
+			return "Sinto muito, mas há ciclos"
+	
 def floydWarshall(grafo):
 	
 	numVertices = grafo.getNumVertices()
@@ -157,6 +171,7 @@ def floydWarshall(grafo):
 	matriz = [[infinito for _ in range(numVertices)] for _ in range(numVertices)]
 	vertices = grafo.getVertices()
 	arestas = grafo.getArestas()
+	
 	
 	for i in range(numVertices):
 		for j in range(numVertices):
@@ -173,19 +188,17 @@ def floydWarshall(grafo):
 	
 	return matriz
 
-
 def boruvka(grafo):
 	floresta = setFlorestaInicial(grafo.getVertices())
 	alcancadas = []
-	
 	while len(floresta) != 1:
 		for subarvore in floresta:
 			if not isAlcancada(subarvore, alcancadas):
+				#print(subarvore)
 				menor_franja = minFranja(grafo.getFranja(vertices(subarvore)))
 				subarvore.append(menor_franja)
 				alcancadas.append(subarvore)
-		# Unificar as arestas alcancadas significa unir todas elas em novas subárvores
-		floresta = unificar(alcancadas)
+				floresta.remove(subarvore)
 		alcancadas = []
-	
-	return delFlorestaInicial(removeDuplicadas(floresta[0]))
+		unificar(floresta)
+	return floresta
