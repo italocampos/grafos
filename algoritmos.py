@@ -159,6 +159,7 @@ def boruvka(grafo):
 				menor_franja = minFranja(grafo.getFranja(vertices(subarvore)))
 				subarvore.append(menor_franja)
 				alcancadas.append(subarvore)
+		# Unificar as arestas alcancadas significa unir todas elas em novas subárvores
 		floresta = unificar(alcancadas)
 		alcancadas = []
 	
