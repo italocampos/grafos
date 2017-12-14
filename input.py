@@ -15,7 +15,7 @@ def bananasplit(string):
 	banana = []
 	palavra = ''
 	for c in string:
-		if not c.isalnum() and c not in ['-', '.']:
+		if not c.isalnum() and c not in ['-', '.', '#']:
 			if c in [' ', '\n', '\t'] or palavra != '':
 				if palavra != '':
 					banana.append(palavra)
@@ -27,6 +27,7 @@ def bananasplit(string):
 	if palavra != '':
 		banana.append(palavra)
 	return banana
+
 
 def lerVertices(string, grafo):
 	rotulo = ''
@@ -60,6 +61,7 @@ def lerVertices(string, grafo):
 			break
 
 	return grafo
+
 
 def lerArestas(string, grafo):
 	nome = ''
@@ -132,11 +134,14 @@ def lerArestas(string, grafo):
 			rotulo = rotulo[:-1]
 			grafo.addAresta(copy(aresta), peso, rotulo)
 			rotulo = ''; peso = 1.0; estado = 0; nome = palavra + ' '; aresta = ['', '']
+			if palavra == '#':
+				break
 	else:
 		rotulo = rotulo[:-1]
 		grafo.addAresta(copy(aresta), peso, rotulo)
 	
 	return grafo
+
 
 def lerTipo(string, grafo):
 	cont = 0
@@ -151,6 +156,7 @@ def lerTipo(string, grafo):
 			start = 1
 
 	return grafo
+
 
 def validar(string):
 	estado = 0
@@ -281,7 +287,9 @@ def validar(string):
 			else:
 				estado = 'invalid'
 		elif estado == 'final':
-			if palavra not in reservados:
+			if palavra[0] == '#':
+				break
+			elif palavra not in reservados:
 				estado = 8
 			elif palavra == '#':
 				estado = 'final'
@@ -289,11 +297,17 @@ def validar(string):
 			else:
 				estado = 'invalid'
 		elif estado == 'final1':
+<<<<<<< HEAD
+			if palavra[0] == '#':
+				break
+			estado = 'invalid'
+=======
 			if palavra == '#':
 				estado = 'final1'
 				break
 			else:
 				estado = 'invalid'
+>>>>>>> c7b98dd0adec22da1d051c04f7d2800acefe7ac3
 		if estado == 'invalid':
 			break
 		leitura += ' ' + palavra
@@ -302,6 +316,7 @@ def validar(string):
 	else:
 		print('Erro de sintaxe: ', leitura)
 		return False
+
 
 def lerGrafo(nome_arquivo):
 	grafo = Grafo(True)
@@ -320,6 +335,7 @@ def lerGrafo(nome_arquivo):
 		return grafo
 	else:
 		return None
+
 
 def isreal(string):
 	try:

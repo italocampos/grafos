@@ -1,17 +1,17 @@
--Para comentar linhas, adicione um '-' sem espaço ao início da palavra
-reservada -direcionado.
+#Para comentar linhas, adicione um '#' sem espaço ao início das palavras
+reservadas #direcionado, #vertices e #arestas.
 
--direcionado = False
--vertices Mãe do Rio, Ipixuna, Breu Branco, Afuá, São Caetano de Oldivelas;
--arestas 
+#direcionado = False
+#vertices Mãe do Rio, Ipixuna, Breu Branco, Afuá, São Caetano de Oldivelas;
+#arestas 
 	Mãe do Rio: Ipixuna (7) "PA 212", Breu Branco (14);
 	Ipixuna: Breu Branco (12), Afuá (15) "PA 112";
 	São Caetano de Oldivelas: Mãe do Rio, Breu Branco, Afuá "PA 190";
 
--Grafo-exemplo de Dijkstra (slide 7:41)
--direcionado = False
--vertices A, B, C, D, E, F, G, Z;
--arestas
+#Grafo-exemplo de Dijkstra (slide 7:41)
+#direcionado = False
+#vertices A, B, C, D, E, F, G, Z;
+#arestas
 	A: B(16), C(10), D(5);
 	B: G(6), F(4), C(2);
 	C: D(4), E(10), F(12);
@@ -20,28 +20,28 @@ reservada -direcionado.
 	F: G(8), Z(16);
 	G: Z(7);
 
--Grafo-exemplo de Bellman-Ford (slide 8:5)
--direcionado = True
--vertices S, T, X, Y, Z;
--arestas
+#Grafo-exemplo de Bellman-Ford (slide 8:5)
+#direcionado = True
+#vertices S, T, X, Y, Z;
+#arestas
 	S: T(6), Y(7);
 	T: X(5), Y(8), Z(-4);
 	X: T(-2);
 	Y: Z(9), X(-3);
 	Z: S(2), X(7);
 
--Grafo-exemplo de Floyd-Warshall (slide 9:5)
-direcionado = True
-vertices 1, 2, 3;
-arestas
+#Grafo-exemplo de Floyd-Warshall (slide 9:5)
+#direcionado = True
+#vertices 1, 2, 3;
+#arestas
 	1: 1(2), 2(8), 3(5);
 	2: 1(3);
 	3: 2(2);
 
 #Grafo-exemplo para os algoritmos de Prim, Kruskal e Boruvka
--direcionado = False
--vertices 0, 1, 2, 3, 4, 5, 6;
--arestas 
+#direcionado = False
+#vertices 0, 1, 2, 3, 4, 5, 6;
+#arestas 
 	0: 2 (5), 3 (8);
 	1: 2 (16), 4 (30), 6 (26);
 	2: 3 (10), 4 (3);
