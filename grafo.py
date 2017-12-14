@@ -8,6 +8,7 @@ Created on Thu Oct 26 22:40:32 2017
 
 from vertice import Vertice
 from aresta import Aresta
+from copy import copy
 
 class Grafo:
 	vertices = []
@@ -86,6 +87,9 @@ class Grafo:
 		for v in self.vertices:
 			vertices.append(v.getRotulo())
 		return vertices
+		
+	def getNumVertices(self):
+		return len(self.vertices)
 
 	def getArestas(self):
 		arestas = []

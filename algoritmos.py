@@ -148,19 +148,42 @@ def bellmanford (grafo, vertice_inicial):
 								v1[1] = u[1] + pesoAresta(arestas, [u[0],v1[0]])
 								v1[2] = u[0]
 		return vertices
-			
+	
+def floydWarshall(grafo):
+	
+	numVertices = grafo.getNumVertices()
+	
+	matriz = [[infinito for _ in range(numVertices)] for _ in range(numVertices)]
+	vertices = grafo.getVertices()
+	arestas = grafo.getArestas()
+	
+	
+	for i in range(numVertices):
+		for j in range(numVertices):
+			if grafo.vertices[i].getRotulo() == grafo.vertices[j].getRotulo():
+				matriz[i][j] = 0
+			elif grafo.hasAresta([grafo.vertices[i].getRotulo(),grafo.vertices[j].getRotulo()]):
+				matriz[i][j] = pesoAresta(arestas, [grafo.vertices[i].getRotulo(),grafo.vertices[j].getRotulo()])
+	
+	for k in range(numVertices):
+		for i in range(numVertices):
+			for j in range(numVertices):
+				if matriz[i][j] > matriz[i][k] + matriz[k][j]:
+					matriz[i][j] = matriz[i][k] + matriz[k][j]
+	
+	return matriz
+
 def boruvka(grafo):
 	floresta = setFlorestaInicial(grafo.getVertices())
 	alcancadas = []
- 
 	while len(floresta) != 1:
 		for subarvore in floresta:
 			if not isAlcancada(subarvore, alcancadas):
+				#print(subarvore)
 				menor_franja = minFranja(grafo.getFranja(vertices(subarvore)))
 				subarvore.append(menor_franja)
 				alcancadas.append(subarvore)
-		# Unificar as arestas alcancadas significa unir todas elas em novas subárvores
-		floresta = unificar(alcancadas)
+				floresta.remove(subarvore)
 		alcancadas = []
-	
+		unificar(floresta)
 	return floresta
