@@ -1,35 +1,102 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from tabela import Tabela
+from algoritmos import *
+from grafo import *
 from input import *
-from grafos import *
-#import input.in
 
 def main():
-    a = Tabela()
-    a = addFromFile('input.in')
-    print("BUSCA EM GRAFOS +++++++++++++++++")
-    print("INSTRUÇÕES: Para inserir um grafo no aplicativo, edite o arquivo input.in \
-(no formato-exemplo em que está) neste diretório. O software utiliza a notação de \
-listas de adjacências para representar grafos. ")
-    print("\nGrafo lido:")
-    a.printTable()
 
-    print("---------------------------------------------------------")
-    print("Busca em largura")
-    marcados, exploradas, retorno = buscaLargura(a, 1)
-    print("Resultados da busca em largura no grafo:")
-    print("Noh inicial: ", 1)
-    print("Arestas exploradas: ", exploradas)
-    print("Arestas de retorno: ", retorno, "\n")
-
-    print("---------------------------------------------------------")
-    print("Busca em profundidade")
-    marcados, exploradas, retorno = buscaProfundidade(a, 1, [], [], [])
-    print("Resultados da busca em profundidade:")
-    print("Noh inicial: ", 1)
-    print("Arestas exploradas: ", exploradas)
-    print("Arestas de retorno: ", retorno)
+	grafoPrimBoruvkaKruskal = lerGrafo("prim_kruskal_boruvka.in")
+	grafoDijkstra = lerGrafo("dijkstra.in")
+	grafoBellmanFord = lerGrafo("bellmanford.in")
+	grafoFloydWarshall = lerGrafo("floydwarshall.in")
+	
+	
+	#======================================================================================================
+	
+	
+	print("Grafo usado: ")
+	grafoPrimBoruvkaKruskal.printAll()
+	
+	inicial = grafoPrimBoruvkaKruskal.vertices[0].getRotulo()
+	
+	
+	print("---------------------------------------------------------")
+	print("Busca em largura")
+	marcados, exploradas, retorno = buscaLargura(grafoPrimBoruvkaKruskal, inicial)
+	print("Resultados da busca em largura no grafo:")
+	print("Noh inicial: ", inicial)
+	print("Arestas exploradas: ", exploradas)
+	print("Arestas de retorno: ", retorno, "\n")
+	
+	#------------------------------
+	
+	print("---------------------------------------------------------")
+	print("Busca em profundidade")
+	marcados, exploradas, retorno = buscaProfundidade(grafoPrimBoruvkaKruskal, inicial, [], [], [])
+	print("Resultados da busca em profundidade:")
+	print("Noh inicial: ", inicial)
+	print("Arestas exploradas: ", exploradas)
+	print("Arestas de retorno: ", retorno)
+	
+	
+	#======================================================================================================
+	
+	
+	print("---------------------------------------------------------")
+	print("Algoritmo de Prim")
+	Arv_Min = prim(grafoPrimBoruvkaKruskal, inicial)
+	print("Resultados do algorimo de Prim:")
+	print("Noh inicial: ", inicial)
+	print("Arvore Minima: ", Arv_Min)
+	
+	#------------------------------
+	
+	print("---------------------------------------------------------")
+	print("Algoritmo de Kruskal")
+	Arv_Min = kruskal(grafoPrimBoruvkaKruskal)
+	print("Resultados do algorimo de Kruskal:")
+	print("Arvore Minima: ", Arv_Min)
+	
+	
+	print("---------------------------------------------------------")
+	print("Algoritmo de Boruvka")
+	Arv_Min = boruvka(grafoPrimBoruvkaKruskal)
+	print("Resultados do algorimo de Boruvka:")
+	print("Arvore Minima: ", Arv_Min)
+	
+	#======================================================================================================
+	
+	
+	inicial = grafoDijkstra.vertices[0].getRotulo()
+	
+	
+	print("---------------------------------------------------------")
+	print("Algoritmo de Dijkstra")
+	retorno = dijkstra(grafoDijkstra, inicial)
+	print("Noh inicial: ", inicial)
+	print("Resultados do algorimo de Dijkstra:") 
+	print("vertices [nome do vértice, distância, vértice anterior]: ", retorno)
+	
+	
+	inicial = grafoBellmanFord.vertices[0].getRotulo()
+	
+	
+	print("---------------------------------------------------------")
+	print("Algoritmo de Bellman-Ford")
+	retorno = bellmanford(grafoBellmanFord, inicial)
+	print(retorno)
+	
+	
+	inicial = grafoFloydWarshall.vertices[0].getRotulo()
+	
+	
+	print("---------------------------------------------------------")
+	print("Algoritmo de FloydWardshall")
+	retorno = floydWarshall(grafoFloydWarshall)
+	print(retorno)
+	
+	pare = input('')
 
 main() 

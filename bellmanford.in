@@ -1,0 +1,9 @@
+-Grafo-exemplo de Bellman-Ford (slide 8:5)
+direcionado = True
+vertices S, T, X, Y, Z;
+arestas
+	S: T(6), Y(7);
+	T: X(5), Y(8), Z(-4);
+	X: T(-2);
+	Y: Z(9), X(-3);
+	Z: S(2), X(7);

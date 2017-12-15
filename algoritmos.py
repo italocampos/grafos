@@ -76,7 +76,7 @@ def kruskal(grafo):
 			T.addAresta(H.arestas[i].getVertices(), H.arestas[i].getPeso())
 		i += 2
 
-	return T
+	return removeDuplicadas(T.getArestas())
 
 
 def dijkstra (grafo, inicial):
@@ -191,14 +191,15 @@ def floydWarshall(grafo):
 def boruvka(grafo):
 	floresta = setFlorestaInicial(grafo.getVertices())
 	alcancadas = []
+	
 	while len(floresta) != 1:
 		for subarvore in floresta:
 			if not isAlcancada(subarvore, alcancadas):
-				#print(subarvore)
 				menor_franja = minFranja(grafo.getFranja(vertices(subarvore)))
 				subarvore.append(menor_franja)
 				alcancadas.append(subarvore)
 				floresta.remove(subarvore)
+		floresta = unificar(alcancadas)
 		alcancadas = []
-		unificar(floresta)
-	return floresta
+		
+	return delFlorestaInicial(removeDuplicadas(floresta[0]))

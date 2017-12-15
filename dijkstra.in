@@ -1,0 +1,11 @@
+-Grafo-exemplo de Dijkstra (slide 7:41)
+direcionado = False
+vertices A, B, C, D, E, F, G, Z;
+arestas
+	A: B(16), C(10), D(5);
+	B: G(6), F(4), C(2);
+	C: D(4), E(10), F(12);
+	D: E(15);
+	E: F(3), Z(5);
+	F: G(8), Z(16);
+	G: Z(7);
