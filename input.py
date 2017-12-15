@@ -134,7 +134,7 @@ def lerArestas(string, grafo):
 			rotulo = rotulo[:-1]
 			grafo.addAresta(copy(aresta), peso, rotulo)
 			rotulo = ''; peso = 1.0; estado = 0; nome = palavra + ' '; aresta = ['', '']
-			if palavra == '#':
+			if palavra[0] == '#':
 				break
 	else:
 		rotulo = rotulo[:-1]
@@ -297,17 +297,9 @@ def validar(string):
 			else:
 				estado = 'invalid'
 		elif estado == 'final1':
-<<<<<<< HEAD
 			if palavra[0] == '#':
 				break
 			estado = 'invalid'
-=======
-			if palavra == '#':
-				estado = 'final1'
-				break
-			else:
-				estado = 'invalid'
->>>>>>> c7b98dd0adec22da1d051c04f7d2800acefe7ac3
 		if estado == 'invalid':
 			break
 		leitura += ' ' + palavra
