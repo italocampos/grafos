@@ -39,9 +39,9 @@ reservadas #direcionado, #vertices e #arestas.
 	3: 2(2);
 
 #Grafo-exemplo para os algoritmos de Prim, Kruskal e Boruvka
-#direcionado = False
-#vertices 0, 1, 2, 3, 4, 5, 6;
-#arestas 
+direcionado = False
+vertices 0, 1, 2, 3, 4, 5, 6;
+arestas 
 	0: 2 (5), 3 (8);
 	1: 2 (16), 4 (30), 6 (26);
 	2: 3 (10), 4 (3);

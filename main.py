@@ -68,7 +68,10 @@ def main():
 	
 	#======================================================================================================
 	
-	
+	print("---------------------------------------------------------")
+	print("Grafo usado para o algoritmo de Dijkstra: ")
+	grafoDijkstra.printAll()
+	print("---------------------------------------------------------")
 	inicial = grafoDijkstra.vertices[0].getRotulo()
 	
 	
@@ -79,7 +82,10 @@ def main():
 	print("Resultados do algorimo de Dijkstra:") 
 	print("vertices [nome do vértice, distância, vértice anterior]: ", retorno)
 	
-	
+	print("---------------------------------------------------------")
+	print("Grafo usado para o algoritmo de Bellman-Ford: ")
+	grafoBellmanFord.printAll()
+	print("---------------------------------------------------------")
 	inicial = grafoBellmanFord.vertices[0].getRotulo()
 	
 	
@@ -88,7 +94,10 @@ def main():
 	retorno = bellmanford(grafoBellmanFord, inicial)
 	print(retorno)
 	
-	
+	print("---------------------------------------------------------")
+	print("Grafo usado para o algorimo de FloydWardshall: ")
+	grafoFloydWarshall.printAll()
+	print("---------------------------------------------------------")
 	inicial = grafoFloydWarshall.vertices[0].getRotulo()
 	
 	

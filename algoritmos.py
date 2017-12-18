@@ -163,7 +163,8 @@ def bellmanford (grafo, vertice_inicial):
 			return vertices
 		else:
 			return "Sinto muito, mas há ciclos"
-	
+
+
 def floydWarshall(grafo):
 	
 	numVertices = grafo.getNumVertices()
@@ -188,18 +189,24 @@ def floydWarshall(grafo):
 	
 	return matriz
 
+
 def boruvka(grafo):
-	floresta = setFlorestaInicial(grafo.getVertices())
+	floresta = setFlorestaTrivial(grafo.getVertices())
 	alcancadas = []
+	flora = []
 	
 	while len(floresta) != 1:
 		for subarvore in floresta:
 			if not isAlcancada(subarvore, alcancadas):
-				menor_franja = minFranja(grafo.getFranja(vertices(subarvore)))
-				subarvore.append(menor_franja)
-				alcancadas.append(subarvore)
-				floresta.remove(subarvore)
-		floresta = unificar(alcancadas)
+				menor_aresta = minFranja(grafo.getFranja(vertices(subarvore)))
+				#alcancadas.append(subarvore)
+				alcancadas += setFlorestaTrivial([menor_aresta[0][1]])
+				nova = deepcopy(subarvore)
+				nova.append(menor_aresta)
+				flora.append(nova)
+			else:
+				flora.append(subarvore)
+		floresta = unificar(flora)
 		alcancadas = []
 		
-	return delFlorestaInicial(removeDuplicadas(floresta[0]))
+	return delFlorestaTrivial(removeDuplicadas(floresta[0]))
