@@ -122,31 +122,49 @@ def isAlcancada(subarvore, alcancadas):
 # Unifica uma floresta onde há subárvores adjacentes
 def unificar(floresta):
 	flora = deepcopy(floresta)
-	nova_floresta = []
-	while flora != []:
-		nova_subarvore = flora[0]
-		flora.remove(flora[0])
-		# Verifica se existe interseção entre a nova subárvore as outras da floresta e as unifica
-		for subarvore in flora:
-			ver = vertices(nova_subarvore)
-			for v in ver:
-				if v in vertices(subarvore):
-					nova_subarvore += subarvore
-					flora.remove(subarvore)
-					break
-		nova_floresta.append(nova_subarvore)
-	return nova_floresta
+	match = False
+	i = 0
+	while i < len(flora):
+		j = i + 1
+		while j < len(flora):
+			if areSobrepostas(flora[i], flora[j]):
+				match = True
+				subway = flora[i]
+				subway += flora[j]
+				flora.append(subway)
+				flora.remove(flora[j])
+				flora.remove(flora[i])
+				i = 0
+				break
+			j += 1
+		if not match:
+			i += 1
+		else:
+			match = False
+	return flora
+
+
+# Verifica se duas subárvores compartilham um mesmo vértice
+def areSobrepostas(subarvore1, subarvore2):
+	vert1 = vertices(subarvore1)
+	vert2 = vertices(subarvore2)
+	for vertice in vert1:
+		if vertice in vert2:
+			return True
+	return False
 
 
 # Transforma um conjunto de vértices para o formato x
-def setFlorestaInicial(vertices):
+#def setFlorestaInicial(vertices):
+def setFlorestaTrivial(vertices):
 	floresta = []
 	for v in vertices:
 		floresta.append([[[v, v], 0]])
 	return floresta
 
 
-def delFlorestaInicial(subarvore):
+#def delFlorestaInicial(subarvore):
+def delFlorestaTrivial(subarvore):
 	lista = []
 	for aresta in subarvore:
 		if not aresta[0][0] == aresta[0][1]:
