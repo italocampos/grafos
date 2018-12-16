@@ -130,6 +130,15 @@ class Grafo():
 			a.print()
 			print(", ", end = '')
 		print()
+
+	def __str__(self):
+		string = '# Vertices: \n'
+		for v in self.vertices:
+			string += v.__str__()
+		string += '\n# Arestas: \n'
+		for a in self.arestas:
+			string += a.__str__()
+		return string
 	
 	def printAll(self):
 		print("Vertices: ")

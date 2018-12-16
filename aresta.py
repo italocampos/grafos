@@ -42,3 +42,11 @@ class Aresta():
 
 	def printAll(self):
 		print('>> aresta: ',self.vertices, ', peso: ', self.peso, ', rótulo: ', self.rotulo)
+
+	def __str__(self):
+		string = str(self.vertices)
+		if self.rotulo:
+			string += ' "{rotulo}"'.format(rotulo = self.rotulo)
+		if self.peso != 1:
+			string += ' (peso: {peso})'.format(peso = self.peso)
+		return string + '\n'

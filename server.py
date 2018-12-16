@@ -6,21 +6,42 @@ from input import *
 from algoritmos import *
 
 class GraphService(Service):
-	def on_connect(self, port):
-		print('New client connected: ', port)
+	def on_connect(self, conn):
+		print('A new client was connected: ')
 
 	def on_disconnect(self, conn):
-		print('The client was disconnected')
+		print('A client was disconnected: ')
 
-	def exposed_get_graph(self, string):
+	def exposed_create_graph(self, string):
 		graph = read_from_string(string)
-		graph.print()
+		if graph:
+			self.graph = graph
+			return str(graph)
+		else:
+			return None
 
-	#exposed_the_real_answer_though = 43     # an exposed attribute
+	def exposed_depth_first_search(self, initial_vertex):
+		return buscaProfundidade(self.graph, initial_vertex, [], [], [])
 
-	def get_question(self):  # while this method is not exposed
-		return "what is the airspeed velocity of an unladen swallow?"
+	def exposed_prim(self, initial_vertex):
+		return prim(self.graph, initial_vertex)
+
+	def exposed_boruvka(self):
+		return boruvka(self.graph)
+
+	def exposed_dijkstra(self, initial_vertex):
+		return dijkstra(self.graph, initial_vertex)
+
+	def floydWarshall(self):
+		return floydWarshall(self.graph)
+
+	def exposed_show_graph(self):
+		return str(self.graph)
 
 if __name__ == "__main__":
-	t = ThreadedServer(GraphService, port=18861)
+	#ip, port = input('Inform the IP address and port where you want to run the server: ').split()
+	#port = int(port)
+	#t = ThreadedServer(GraphService, hostname=ip, port=port)
+	t = ThreadedServer(GraphService, hostname='localhost', port=18861)
+	print('GraphService initiated at {host}:{port}'.format(host = t.host, port = t.port))
 	t.start()

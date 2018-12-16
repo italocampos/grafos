@@ -34,3 +34,9 @@ class Vertice():
 
 	def printAll(self):
 		print('>> vértice:', self.rotulo, ", peso: ", self.peso)
+
+	def __str__(self):
+		string = self.rotulo
+		if self.peso != 0:
+			string += ' (peso: {peso})'.format(peso = self.peso)
+		return string + '\n'
