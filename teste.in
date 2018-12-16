@@ -1,0 +1,10 @@
+-Grafo de teste
+
+direcionado = false
+
+vertices
+	a, b, c, d, e;
+
+arestas
+	a: b(2) "teste", c;
+	c: d, e;
