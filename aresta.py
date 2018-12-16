@@ -6,7 +6,7 @@ Created on Mon Nov 13 17:16:32 2017
 @author: Fernando Junior, Italo Ramon
 """
 
-class Aresta:
+class Aresta():
 	rotulo = ''
 	peso = 1
 	vertices = []

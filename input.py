@@ -29,7 +29,7 @@ def bananasplit(string):
 	return banana
 
 
-def lerVertices(string, grafo):
+def read_vertices(string, grafo):
 	rotulo = ''
 	peso = 0.0
 	estado = -1
@@ -63,7 +63,7 @@ def lerVertices(string, grafo):
 	return grafo
 
 
-def lerArestas(string, grafo):
+def read_edges(string, grafo):
 	nome = ''
 	rotulo = ''
 	peso = 1.0
@@ -143,7 +143,7 @@ def lerArestas(string, grafo):
 	return grafo
 
 
-def lerTipo(string, grafo):
+def read_type(string, grafo):
 	cont = 0
 	start = 0
 
@@ -158,7 +158,7 @@ def lerTipo(string, grafo):
 	return grafo
 
 
-def validar(string):
+def validate(string):
 	estado = 0
 	reservados = [',', '(', ')', ';', ':', '"', '=', 'arestas']
 	leitura = ''
@@ -310,7 +310,7 @@ def validar(string):
 		return False
 
 
-def lerGrafo(nome_arquivo):
+def read_from_file(nome_arquivo):
 	grafo = Grafo(True)
 
 	# ler o arquivo de entrada
@@ -319,15 +319,24 @@ def lerGrafo(nome_arquivo):
 	arquivo.close()
 
 	# validar a entrada
-	if validar(string):
+	if validate(string):
 		# ler os vértices, o tipo e as arestas
-		grafo = lerTipo(string, grafo)
-		grafo = lerVertices(string, grafo)
-		grafo = lerArestas(string, grafo)
+		grafo = read_type(string, grafo)
+		grafo = read_vertices(string, grafo)
+		grafo = read_edges(string, grafo)
 		return grafo
 	else:
 		return None
 
+def read_from_string(string):
+	if validate(string):
+		grafo = Grafo(True)
+		grafo = read_type(string, grafo)
+		grafo = read_vertices(string, grafo)
+		grafo = read_edges(string, grafo)
+		return grafo
+	else:
+		return None
 
 def isreal(string):
 	try:
