@@ -45,3 +45,10 @@ if __name__ == "__main__":
 	t = ThreadedServer(GraphService, hostname='localhost', port=18861)
 	print('GraphService initiated at {host}:{port}'.format(host = t.host, port = t.port))
 	t.start()
+
+#import rpyc
+#conn = rpyc.connect('127.0.0.1', 18861)
+#file = open('teste.in')
+#string = file.read()
+#ret = conn.root.create_graph()
+#print(ret)
