@@ -9,6 +9,7 @@ Created on Thu Oct 26 22:40:32 2017
 from vertice import Vertice
 from aresta import Aresta
 from copy import copy
+import json
 
 class Grafo:
 	vertices = []
@@ -114,6 +115,10 @@ class Grafo:
 				if e == t.getVertices()[0] and t.getVertices()[1] not in exploradas:
 					temp.append([t.getVertices(), t.getPeso()])
 		return temp
+
+	def getJson(self):
+		return json.dumps(self, default=lambda o: o.__dict__, 
+			sort_keys=True, indent=4)
 
 	def print(self):
 		print("Vertices: ", end = '')
