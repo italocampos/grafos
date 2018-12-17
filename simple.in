@@ -1,1 +1,5 @@
-direcionado = false vertices a, b, c; arestas a: b, c;
+direcionado = false
+
+vertices a, b, c;
+
+arestas a: b, c;
