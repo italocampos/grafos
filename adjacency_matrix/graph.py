@@ -80,7 +80,7 @@ class Graph:
 		return self.adjacency_matrix[self.get_vertex_position(vertex_a)][self.get_vertex_position(vertex_b)] == 1
 
 
-	def get_adjacent(self, vertex):
+	def get_adjacent_indexes(self, vertex):
 		adjacent = list()
 		index = 0
 		for v in self.adjacency_matrix[self.get_vertex_position(vertex)]:
@@ -88,6 +88,24 @@ class Graph:
 				adjacent.append(index)
 			index += 1
 		return adjacent
+
+
+	def get_adjacent(self, vertex):
+		adjacent = list()
+		index = 0
+		for v in self.adjacency_matrix[self.get_vertex_position(vertex)]:
+			if v == 1:
+				adjacent.append(self.vertices[index])
+			index += 1
+		return adjacent
+
+
+	def is_adjacent_to(self, vertex, vertices_list):
+		for v in vertices_list:
+			if not self.edge_exists(v, vertex):
+				return False
+		return True
+
 
 
 	def clear(self):
