@@ -40,8 +40,15 @@ class Graph:
 		self.adjacency_matrix[self.get_vertex_position(vertex_b)][self.get_vertex_position(vertex_a)] = 1
 
 
-	def __set_edge(self, index_i, index_j, value):
+	def set_edge(self, index_i, index_j, value):
 		self.adjacency_matrix[index_i][index_j] = value
+
+	def get_edge(self, index_i, index_j):
+		return self.adjacency_matrix[index_i][index_j]
+
+
+	def get_vertices(self):
+		return self.vertices
 
 
 	def get_vertex_position(self, vertex):
@@ -53,6 +60,13 @@ class Graph:
 				index += 1
 		else:
 			raise(Exception("Vertex %s doesn't exists." % vertex))
+
+
+	def get_vertex_name(self, vertex_position):
+		if 0 <= vertex_position < len(self.vertices):
+			return self.vertices[vertex_position]
+		else:
+			raise(Exception("That vertex doesn't exists."))
 
 
 	def vertex_degree(self, vertex):
@@ -84,30 +98,33 @@ class Graph:
 	def read_from_file(self, file_name):
 		self.clear()
 		file = open(file_name, 'r')
-		for vertex_name in file.readline().split('\t'):
-			if vertex_name != '\n':
-				self.add_vertex(vertex_name)
-				#print(vertex_name)
+		for vertex_name in file.readline().splitlines()[0].split('\t'):
+			self.add_vertex(vertex_name)
+			#print(vertex_name)
 		i = 0
 		for line in file:
 			j = 0
 			for number in line.split('\t'):
-				self.__set_edge(i, j, int(number))
 				#print('(%d, %d): %s' % (i, j, number))
+				self.set_edge(i, j, int(number))
 				j += 1
 			i += 1
 		file.close()
 
 	def __str__(self):
-		string = '   '
+		#string = '   '
+		string = '\t'
 		for vertex_name in self.vertices:
-			string += vertex_name + '   '
+			#string += vertex_name + '   '
+			string += vertex_name + '\t'
 		string += '\n'
 		index = 0
 		for line in self.adjacency_matrix:
-			string += self.vertices[index] + '  '
+			#string += self.vertices[index] + '  '
+			string += self.vertices[index] + '\t'
 			for number in line:
-				string += str(number) + '   '
+				#string += str(number) + '   '
+				string += str(number) + '\t'
 			string += '\n'
 			index += 1
 		return string
