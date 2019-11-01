@@ -25,7 +25,7 @@ def remove_sublist(list_, sublist):
 
 def merge(vector_a, vector_b):
 	merged = list()
-	for _ in range(len(vector_a)):
+	while vector_a != [] and vector_b != []:
 		if vector_a[0][1] > vector_b[0][1]:
 			merged.append(vector_a.pop(0))
 		else:
