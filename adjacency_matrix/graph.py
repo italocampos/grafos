@@ -113,6 +113,7 @@ class Graph:
 		self.adjacency_matrix = list()
 
 
+	# Read a adjacency matrix of a graph from a file
 	def read_from_file(self, file_name):
 		self.clear()
 		file = open(file_name, 'r')
