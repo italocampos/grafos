@@ -43,6 +43,7 @@ class Graph:
 	def set_edge(self, index_i, index_j, value):
 		self.adjacency_matrix[index_i][index_j] = value
 
+
 	def get_edge(self, index_i, index_j):
 		return self.adjacency_matrix[index_i][index_j]
 
@@ -107,28 +108,10 @@ class Graph:
 		return True
 
 
-
 	def clear(self):
 		self.vertices = list()
 		self.adjacency_matrix = list()
 
-
-	# Read a adjacency matrix of a graph from a file
-	def read_from_file(self, file_name):
-		self.clear()
-		file = open(file_name, 'r')
-		for vertex_name in file.readline().splitlines()[0].split('\t'):
-			self.add_vertex(vertex_name)
-			#print(vertex_name)
-		i = 0
-		for line in file:
-			j = 0
-			for number in line.split('\t'):
-				#print('(%d, %d): %s' % (i, j, number))
-				self.set_edge(i, j, int(number))
-				j += 1
-			i += 1
-		file.close()
 
 	def __str__(self):
 		#string = '   '

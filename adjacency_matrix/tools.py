@@ -42,3 +42,23 @@ def merge_sort(vector):
 		vector_a = merge_sort(vector[:len(vector)//2])
 		vector_b = merge_sort(vector[len(vector)//2:])
 		return merge(vector_a, vector_b)
+
+
+# Read a adjacency matrix from a file and returns a Graph object
+def read_from_file(file_name):
+	g = Graph()
+	g.clear()
+	file = open(file_name, 'r')
+	for vertex_name in file.readline().splitlines()[0].split('\t'):
+		g.add_vertex(vertex_name)
+		#print(vertex_name)
+	i = 0
+	for line in file:
+		j = 0
+		for number in line.split('\t'):
+			#print('(%d, %d): %s' % (i, j, number))
+			g.set_edge(i, j, int(number))
+			j += 1
+		i += 1
+	file.close()
+	return g
