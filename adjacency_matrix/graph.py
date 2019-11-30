@@ -133,6 +133,8 @@ class Graph:
 	# Returns a list with edges `e` in form (a, b), where a and b are vertices
 	# and each `e` forms a cycle in the graph, starting from `root`.
 	def cycles(self, root):
+		if not self.vertex_exists(root):
+			raise(ValueError("This vertex does not exist."))
 		cycles = list()
 		for cycle in self.deep_first_search('', root, []):
 			if cycle not in cycles and (cycle[1], cycle[0]) not in cycles:
@@ -141,8 +143,10 @@ class Graph:
 	
 
 	# Performs a deep-first search in the graph. Returns a list with the
-	# back edges.
+	# back edges. Searches vertices only in the conex part.
 	def deep_first_search(self, predecessor, root, marked):
+		if not self.vertex_exists(root):
+			raise(ValueError("This vertex does not exist."))
 		marked.append(root)
 		back_edges = list()
 		for adj in self.get_adjacent(root):
@@ -156,6 +160,8 @@ class Graph:
 
 	# Returns the height of the graph
 	def graph_height(self, root):
+		if not self.vertex_exists(root):
+			raise(ValueError("This vertex does not exist."))
 		search = self.breadth_first_search(root)
 		larger = search.pop()[1]
 		for pair in search:
@@ -167,8 +173,11 @@ class Graph:
 	# Performs a breadth-first search in the graph. Returns a list with the
 	# pairs (a, b) of each vertex, where each index `i` of the `depths` vector 
 	# corresponds to respective vertex `i` on `self.vertices` vector. `a` is the 
-	# predecessor and `b` is the depth of `self.vertices[i]`.
+	# predecessor and `b` is the depth of `self.vertices[i]`.  Searches vertices 
+	# only in the conex part.
 	def breadth_first_search(self, root):
+		if not self.vertex_exists(root):
+			raise(ValueError("This vertex does not exist."))
 		# Starts the list with the depths of the vertices
 		search = [('', 0) for _ in self.vertices]
 		# Creates the queue and starts the search
@@ -180,6 +189,21 @@ class Graph:
 					queue.append(adjacent)
 					search[self.get_vertex_position(adjacent)] = (vertex, search[self.get_vertex_position(vertex)][1] + 1)
 		return search
+
+
+	# Returns a list that contains the nodes connected to the `root` node 
+	# directly and indirectly
+	def conex_vertices(self, root):
+		if not self.vertex_exists(root):
+			raise(ValueError("This vertex does not exist."))
+		connected_vertices = [root]
+		index = 0
+		for vertex in self.breadth_first_search(root):
+			if vertex[1] != 0:
+				connected_vertices.append(self.get_vertex_name(index))
+			index += 1
+		return connected_vertices
+
 
 
 	def __str__(self):
