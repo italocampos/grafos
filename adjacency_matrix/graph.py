@@ -40,15 +40,24 @@ class Graph:
 
 	# Adds a new edge between `vertex_a` and `vertex_b`
 	def add_edge(self, vertex_a, vertex_b):
-		self.adjacency_matrix[self.get_vertex_position(vertex_a)][self.get_vertex_position(vertex_b)] = 1
-		self.adjacency_matrix[self.get_vertex_position(vertex_b)][self.get_vertex_position(vertex_a)] = 1
+		self.set_edge(self.get_vertex_position(vertex_a), self.get_vertex_position(vertex_b), 1)
+
+	
+	# Removes an edge between `vertex_a` and `vertex_b`
+	def remove_edge(self, vertex_a, vertex_b):
+		self.set_edge(self.get_vertex_position(vertex_a), self.get_vertex_position(vertex_b), 0)
 
 
-	# Sets a value to the corresponding edge
+	# Sets a value (0 or 1) to the corresponding edge
 	def set_edge(self, index_i, index_j, value):
-		if value in [0, 1]:
-			self.adjacency_matrix[index_i][index_j] = value
-		raise(ValueError('The value %d cant be set on the edges.' % value))
+		if 0 <= index_i < len(self.adjacency_matrix) and 0 <= index_j < len(self.adjacency_matrix):
+			if value in [0, 1]:
+				self.adjacency_matrix[index_i][index_j] = value
+				self.adjacency_matrix[index_j][index_i] = value
+			else:
+				raise(ValueError('The value %d cant be set on the edges.' % value))
+		else:
+			raise(ValueError('This edge does not exist.'))
 
 
 	# Returns the value of edge corresponding to `self.adjacency_matrix[index_i][index_j]`
@@ -63,14 +72,12 @@ class Graph:
 
 	# Given the vertex name, returns the position of the vertex
 	def get_vertex_position(self, vertex):
-		if self.vertex_exists(vertex):
+		if self._is_valid_vertex(vertex):
 			index = 0
 			for v in self.vertices:
 				if vertex == v:
 					return index
 				index += 1
-		else:
-			raise(Exception("Vertex %s doesn't exists." % vertex))
 
 
 	# Given the vertex position, returns the name of the vertex
@@ -78,7 +85,7 @@ class Graph:
 		if 0 <= vertex_position < len(self.vertices):
 			return self.vertices[vertex_position]
 		else:
-			raise(Exception("That vertex doesn't exists."))
+			raise(Exception("That vertex doesn't exist."))
 
 
 	# Returns the `vertex` degree
@@ -133,41 +140,38 @@ class Graph:
 	# Returns a list with edges `e` in form (a, b), where a and b are vertices
 	# and each `e` forms a cycle in the graph, starting from `root`.
 	def cycles(self, root):
-		if not self.vertex_exists(root):
-			raise(ValueError("This vertex does not exist."))
-		cycles = list()
-		for cycle in self.deep_first_search('', root, []):
-			if cycle not in cycles and (cycle[1], cycle[0]) not in cycles:
-				cycles.append(cycle)
-		return cycles
+		if self._is_valid_vertex(root):
+			cycles = list()
+			for cycle in self.deep_first_search('', root, []):
+				if cycle not in cycles and (cycle[1], cycle[0]) not in cycles:
+					cycles.append(cycle)
+			return cycles
 	
 
 	# Performs a deep-first search in the graph. Returns a list with the
 	# back edges. Searches vertices only in the conex part.
 	def deep_first_search(self, predecessor, root, marked):
-		if not self.vertex_exists(root):
-			raise(ValueError("This vertex does not exist."))
-		marked.append(root)
-		back_edges = list()
-		for adj in self.get_adjacent(root):
-			if adj not in marked:
-				#print('Going from %s to %s with marked = %s' % (root, adj, marked))
-				back_edges += self.deep_first_search(root, adj, marked)
-			elif adj != predecessor:
-				back_edges.append((root, adj))
-		return back_edges
+		if self._is_valid_vertex(root):
+			marked.append(root)
+			back_edges = list()
+			for adj in self.get_adjacent(root):
+				if adj not in marked:
+					#print('Going from %s to %s with marked = %s' % (root, adj, marked))
+					back_edges += self.deep_first_search(root, adj, marked)
+				elif adj != predecessor:
+					back_edges.append((root, adj))
+			return back_edges
 
 
 	# Returns the height of the graph
 	def graph_height(self, root):
-		if not self.vertex_exists(root):
-			raise(ValueError("This vertex does not exist."))
-		search = self.breadth_first_search(root)
-		larger = search.pop()[1]
-		for pair in search:
-			if pair[1] > larger:
-				larger = pair[1]
-		return larger
+		if self._is_valid_vertex(root):
+			search = self.breadth_first_search(root)
+			larger = search.pop()[1]
+			for pair in search:
+				if pair[1] > larger:
+					larger = pair[1]
+			return larger
 
 	
 	# Performs a breadth-first search in the graph. Returns a list with the
@@ -176,34 +180,37 @@ class Graph:
 	# vector. `a` is the predecessor and `b` is the depth of `self.vertices[i]`.
 	# Searches vertices only in the conex part.
 	def breadth_first_search(self, root):
-		if not self.vertex_exists(root):
-			raise(ValueError("This vertex does not exist."))
-		# Starts the list with the depths of the vertices
-		search = [('', 0) for _ in self.vertices]
-		# Creates the queue and starts the search
-		queue = [root]
-		for vertex in queue:
-			for adjacent in self.get_adjacent(vertex):
-				if adjacent not in queue:
-					#print('Going from %s to %s with depth = %s' % (vertex, adjacent, search[self.get_vertex_position(vertex)][1] + 1))
-					queue.append(adjacent)
-					search[self.get_vertex_position(adjacent)] = (vertex, search[self.get_vertex_position(vertex)][1] + 1)
-		return search
+		if not self._is_valid_vertex(root):
+			# Starts the list with the depths of the vertices
+			search = [('', 0) for _ in self.vertices]
+			# Creates the queue and starts the search
+			queue = [root]
+			for vertex in queue:
+				for adjacent in self.get_adjacent(vertex):
+					if adjacent not in queue:
+						#print('Going from %s to %s with depth = %s' % (vertex, adjacent, search[self.get_vertex_position(vertex)][1] + 1))
+						queue.append(adjacent)
+						search[self.get_vertex_position(adjacent)] = (vertex, search[self.get_vertex_position(vertex)][1] + 1)
+			return search
 
 
 	# Returns a list that contains the nodes connected to the `root` node 
 	# directly and indirectly
 	def conex_vertices(self, root):
-		if not self.vertex_exists(root):
-			raise(ValueError("This vertex does not exist."))
-		connected_vertices = [root]
-		index = 0
-		for vertex in self.breadth_first_search(root):
-			if vertex[1] != 0:
-				connected_vertices.append(self.get_vertex_name(index))
-			index += 1
-		return connected_vertices
+		if self._is_valid_vertex(root):
+			connected_vertices = [root]
+			index = 0
+			for vertex in self.breadth_first_search(root):
+				if vertex[1] != 0:
+					connected_vertices.append(self.get_vertex_name(index))
+				index += 1
+			return connected_vertices
 
+
+	def _is_valid_vertex(self, vertex):
+		if self.vertex_exists(vertex):
+			return True
+		raise(Exception("The vertex %s doesn't exist." % vertex))
 
 
 	def __str__(self):
