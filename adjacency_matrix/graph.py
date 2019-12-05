@@ -171,10 +171,10 @@ class Graph:
 
 	
 	# Performs a breadth-first search in the graph. Returns a list with the
-	# pairs (a, b) of each vertex, where each index `i` of the `depths` vector 
-	# corresponds to respective vertex `i` on `self.vertices` vector. `a` is the 
-	# predecessor and `b` is the depth of `self.vertices[i]`.  Searches vertices 
-	# only in the conex part.
+	# pairs (a, b) of each vertex, where each index `i` of the returned
+	# `search` vector corresponds to the respective vertex `i` on `self.vertices`
+	# vector. `a` is the predecessor and `b` is the depth of `self.vertices[i]`.
+	# Searches vertices only in the conex part.
 	def breadth_first_search(self, root):
 		if not self.vertex_exists(root):
 			raise(ValueError("This vertex does not exist."))
