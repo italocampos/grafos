@@ -40,12 +40,12 @@ class Graph:
 
 	# Adds a new edge between `vertex_a` and `vertex_b`
 	def add_edge(self, vertex_a, vertex_b):
-		self.set_edge(self.get_vertex_position(vertex_a), self.get_vertex_position(vertex_b), 1)
+		self.set_edge(self.get_vertex_index(vertex_a), self.get_vertex_index(vertex_b), 1)
 
 	
 	# Removes an edge between `vertex_a` and `vertex_b`
 	def remove_edge(self, vertex_a, vertex_b):
-		self.set_edge(self.get_vertex_position(vertex_a), self.get_vertex_position(vertex_b), 0)
+		self.set_edge(self.get_vertex_index(vertex_a), self.get_vertex_index(vertex_b), 0)
 
 
 	# Sets a value (0 or 1) to the corresponding edge
@@ -71,7 +71,7 @@ class Graph:
 
 
 	# Given the vertex name, returns the position of the vertex
-	def get_vertex_position(self, vertex):
+	def get_vertex_index(self, vertex):
 		if self._is_valid_vertex(vertex):
 			index = 0
 			for v in self.vertices:
@@ -91,21 +91,21 @@ class Graph:
 	# Returns the `vertex` degree
 	def vertex_degree(self, vertex):
 		degree = 0
-		for number in self.adjacency_matrix[self.get_vertex_position(vertex)]:
+		for number in self.adjacency_matrix[self.get_vertex_index(vertex)]:
 			degree += number
 		return degree
 
 
 	# Checks if a edge exists
 	def edge_exists(self, vertex_a, vertex_b):
-		return self.adjacency_matrix[self.get_vertex_position(vertex_a)][self.get_vertex_position(vertex_b)] == 1
+		return self.adjacency_matrix[self.get_vertex_index(vertex_a)][self.get_vertex_index(vertex_b)] == 1
 
 
 	# Returns a list with the indexes of the adjacents vertices for `vertex`
 	def get_adjacent_indexes(self, vertex):
 		adjacent = list()
 		index = 0
-		for v in self.adjacency_matrix[self.get_vertex_position(vertex)]:
+		for v in self.adjacency_matrix[self.get_vertex_index(vertex)]:
 			if v == 1:
 				adjacent.append(index)
 			index += 1
@@ -116,7 +116,7 @@ class Graph:
 	def get_adjacent(self, vertex):
 		adjacent = list()
 		index = 0
-		for v in self.adjacency_matrix[self.get_vertex_position(vertex)]:
+		for v in self.adjacency_matrix[self.get_vertex_index(vertex)]:
 			if v == 1:
 				adjacent.append(self.vertices[index])
 			index += 1
@@ -138,73 +138,91 @@ class Graph:
 
 	
 	# Returns a list with edges `e` in form (a, b), where a and b are vertices
-	# and each `e` forms a cycle in the graph, starting from `root`.
-	def cycles(self, root):
-		if self._is_valid_vertex(root):
-			cycles = list()
-			for cycle in self.deep_first_search('', root, []):
-				if cycle not in cycles and (cycle[1], cycle[0]) not in cycles:
-					cycles.append(cycle)
-			return cycles
+	# and each `e` is a back edge in the graph, starting from `root`.
+	def deep_first_search(self, root):
+		back_edges = list()
+		for be in self._dfs('', root, []):
+			if be not in back_edges and (be[1], be[0]) not in back_edges:
+				back_edges.append(be)
+		return back_edges
 	
 
 	# Performs a deep-first search in the graph. Returns a list with the
 	# back edges. Searches vertices only in the conex part.
-	def deep_first_search(self, predecessor, root, marked):
+	def _dfs(self, predecessor, root, marked):
 		if self._is_valid_vertex(root):
 			marked.append(root)
 			back_edges = list()
 			for adj in self.get_adjacent(root):
 				if adj not in marked:
 					#print('Going from %s to %s with marked = %s' % (root, adj, marked))
-					back_edges += self.deep_first_search(root, adj, marked)
+					back_edges += self._dfs(root, adj, marked)
 				elif adj != predecessor:
 					back_edges.append((root, adj))
 			return back_edges
 
 
+	# Returns a list with the back_edges found using the seleted search method.
+	# The available methos are: 'dfs' (deep-first search) and 'bfs' (breadth-first)
+	# search
+	def cycles(self, root, search = 'dfs'):
+		if search == 'dfs':
+			return self.deep_first_search(root)
+		if search == 'bfs':
+			_, be = self.breadth_first_search(root)
+			back_edges = list()
+			for b in be:
+				if b not in back_edges and (b[1], b[0]) not in back_edges:
+					back_edges.append(b)
+			return back_edges
+
+
 	# Returns the height of the graph
-	def graph_height(self, root):
-		if self._is_valid_vertex(root):
-			search = self.breadth_first_search(root)
-			larger = search.pop()[1]
-			for pair in search:
-				if pair[1] > larger:
-					larger = pair[1]
-			return larger
+	def height(self, root):
+		search, _ = self.breadth_first_search(root)
+		larger = search.pop()[1]
+		for pair in search:
+			if pair[1] > larger:
+				larger = pair[1]
+		return larger
 
 	
-	# Performs a breadth-first search in the graph. Returns a list with the
-	# pairs (a, b) of each vertex, where each index `i` of the returned
-	# `search` vector corresponds to the respective vertex `i` on `self.vertices`
-	# vector. `a` is the predecessor and `b` is the depth of `self.vertices[i]`.
-	# Searches vertices only in the conex part.
+	# Performs a breadth-first search in the graph. Returns two lists. The first
+	# one list with the pairs (a, b) of each vertex, where each index `i` of the
+	# returned `search` vector corresponds to the respective vertex `i` on 
+	# `self.vertices` vector. `a` is the predecessor and `b` is the depth of 
+	# `self.vertices[i]`. The second one list has the found back edges. This 
+	# method searches vertices only in the conex part of the graph.
 	def breadth_first_search(self, root):
-		if not self._is_valid_vertex(root):
-			# Starts the list with the depths of the vertices
+		if self._is_valid_vertex(root):
+			# List with the back edges
+			back_edges = list()
+			# Starts the list with the depths of the vertice
 			search = [('', 0) for _ in self.vertices]
 			# Creates the queue and starts the search
 			queue = [root]
 			for vertex in queue:
 				for adjacent in self.get_adjacent(vertex):
 					if adjacent not in queue:
-						#print('Going from %s to %s with depth = %s' % (vertex, adjacent, search[self.get_vertex_position(vertex)][1] + 1))
+						#print('Going from %s to %s with depth = %s' % (vertex, adjacent, search[self.get_vertex_index(vertex)][1] + 1))
 						queue.append(adjacent)
-						search[self.get_vertex_position(adjacent)] = (vertex, search[self.get_vertex_position(vertex)][1] + 1)
-			return search
+						search[self.get_vertex_index(adjacent)] = (vertex, search[self.get_vertex_index(vertex)][1] + 1)
+					elif adjacent != search[self.get_vertex_index(vertex)][0]:
+						back_edges.append((vertex, adjacent))
+			return search, back_edges
 
 
 	# Returns a list that contains the nodes connected to the `root` node 
 	# directly and indirectly
 	def conex_vertices(self, root):
-		if self._is_valid_vertex(root):
-			connected_vertices = [root]
-			index = 0
-			for vertex in self.breadth_first_search(root):
-				if vertex[1] != 0:
-					connected_vertices.append(self.get_vertex_name(index))
-				index += 1
-			return connected_vertices
+		connected_vertices = [root]
+		index = 0
+		found_vertices, _ = self.breadth_first_search(root)
+		for vertex in found_vertices:
+			if vertex[1] != 0:
+				connected_vertices.append(self.get_vertex_name(index))
+			index += 1
+		return connected_vertices
 
 
 	def _is_valid_vertex(self, vertex):
